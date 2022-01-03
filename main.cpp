@@ -1,16 +1,12 @@
-#include <SFML/Graphics.hpp>
+#include "src/Board.hpp"
 
 int main() {
-    sf::Window window(
-        sf::VideoMode(640, 480),
-        "Hello World");
-    
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-    }
+    Vect final = Vect(1, 1) + Vect(2, 2);
+    final.print();
+    final += Vect(3, 3);
+    final.print();
+    Piece* wp1 = new Pawn(Piece::WHITE, final);
+    //send help idk how to do this
+    //wp1.print();
+    delete(wp1);
 }
