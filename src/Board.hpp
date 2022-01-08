@@ -11,4 +11,5 @@ class Board {
 
     private:
         std::map<Piece::ID, std::string> imageFiles;
+        int board[8][8];
 };
