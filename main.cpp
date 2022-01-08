@@ -5,9 +5,10 @@ int main() {
     final.print();
     final += Vect(3, 3);
     final.print();
-    Piece* wp1 = new Pawn(Piece::WHITE, final);
-    // Pawn* wp = dynamic_cast<Pawn*>(wp1);
-    //send help idk how to do this
-    //wp1.print();
+    Pawn* wp1 = (Pawn *)(new Piece(Piece::WHITE, final, Piece::PAWN));
+    wp1->print();
+    Board game;
+    game.render();
+
     delete(wp1);
 }

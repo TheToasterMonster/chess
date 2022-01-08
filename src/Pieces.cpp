@@ -31,8 +31,7 @@ Piece::ID Piece::determineID(Type type, Side side) {
         case QUEEN:
             return (side == BLACK) ? BQ : WQ;
             break;
-        case ROOK:
+        default:
             return (side == BLACK) ? BR : WR;
-            break;
     }
 }
