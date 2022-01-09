@@ -14,6 +14,10 @@ Vect Piece::getLocation() {
     return m_location;
 }
 
+Piece::ID Piece::getID() {
+    return m_id;
+}
+
 Piece::ID Piece::determineID(Type type, Side side) {
     switch (type) {
         case BISHOP:

@@ -17,6 +17,7 @@ class Piece {
         Piece(Side side, Vect location, Type type);
         Side getSide();
         Vect getLocation();
+        ID getID();
         ID determineID(Type type, Side side);
 
     private:
