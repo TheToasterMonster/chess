@@ -79,13 +79,10 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
 
 void Board::updateHighlightOnMouseClick(Vect position) {
     if (highlights[position.x][position.y] == TRANSPARENT) {
-        while (!highlighted.empty()) {
-            Vect back = highlighted.back();
-            highlights[back.x][back.y] = TRANSPARENT;
-            highlighted.pop_back();
-        }
+        clearHighlights();
 
         highlights[position.x][position.y] = GREY;
+        selectedSquare = position;
         highlighted.push_back(position);
 
         if (board[position.x][position.y]) {
@@ -94,7 +91,28 @@ void Board::updateHighlightOnMouseClick(Vect position) {
                 highlighted.push_back(move);
             }
         }
+    } else if (highlights[position.x][position.y] == GREEN) {
+        clearHighlights();
+        move(selectedSquare, position);
     }
+}
+
+void Board::clearHighlights() {
+    while (!highlighted.empty()) {
+        Vect back = highlighted.back();
+        highlights[back.x][back.y] = TRANSPARENT;
+        highlighted.pop_back();
+    }
+}
+
+void Board::move(Vect start, Vect end) {
+    if (board[end.x][end.y]) {
+        delete(board[end.x][end.y]);
+    }
+
+    board[end.x][end.y] = board[start.x][start.y];
+    board[end.x][end.y]->setLocation(end);
+    board[start.x][start.y] = nullptr;
 }
 
 std::vector<Vect> Board::calcMoves(Piece* piece) {

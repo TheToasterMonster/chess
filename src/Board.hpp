@@ -43,17 +43,24 @@ class Board {
             GREEN
         };
 
+        sf::RenderWindow* window;
         std::map<Piece::ID, sf::Texture> images;
         Piece* board[8][8];
+
         HighlightType highlights[8][8];
         std::vector<Vect> highlighted;
-        sf::RenderWindow* window;
+        Vect selectedSquare;
 
         Board();
         ~Board();
+
         void start();
         void render();
+
         void updateHighlightOnMouseClick(Vect position);
+        void clearHighlights();
+        void move(Vect start, Vect end);
+
         std::vector<Vect> calcMoves(Piece* piece);
         bool isValidMousePosition(Vect position);
         bool isValidPiecePosition(Vect position, Piece::Side side);
