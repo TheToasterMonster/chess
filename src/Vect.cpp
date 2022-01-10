@@ -2,50 +2,50 @@
 #include "Vect.hpp"
 
 Vect::Vect() {
-    m_x = -1;
-    m_y = -1;
+    x = -1;
+    y = -1;
 }
 
 Vect::Vect(int x, int y) {
-    m_x = x;
-    m_y = y;
+    this->x = x;
+    this->y = y;
 }
 
 int Vect::getX() {
-    return m_x;
+    return x;
 }
 
 int Vect::getY() {
-    return m_y;
+    return y;
 }
 
 Vect Vect::operator+(Vect shift) {
-    return Vect(m_x + shift.m_x, m_y + shift.m_y);
+    return Vect(x + shift.x, y + shift.y);
 }
 
 Vect Vect::operator*(int scale) {
-    return Vect(m_x * scale, m_y * scale);
+    return Vect(x * scale, y * scale);
 }
 
 Vect Vect::operator/(int scale) {
-    return Vect(m_x / scale, m_y / scale);
+    return Vect(x / scale, y / scale);
 }
 
 void Vect::operator+=(Vect shift) {
-    m_x += shift.m_x;
-    m_y += shift.m_y;
+    x += shift.x;
+    y += shift.y;
 }
 
 std::string Vect::asString() {
-    return "(" + std::to_string(m_x) + ", " + std::to_string(m_y) + ")";
+    return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }
 
 sf::Vector2f Vect::asVector2f() {
-    return sf::Vector2f(m_x, m_y);
+    return sf::Vector2f(x, y);
 }
 
 void Vect::print() {
-    std::cout << '(' << m_x << ',' << ' ' << m_y << ')' << std::endl;
+    std::cout << '(' << x << ',' << ' ' << y << ')' << std::endl;
 }
 
 Vect Vect::toRender() {

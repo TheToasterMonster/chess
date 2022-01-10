@@ -4,6 +4,8 @@
 
 class Vect {
     public:
+        int x, y;
+
         // default constructor
         Vect();
         // constructor
@@ -34,7 +36,4 @@ class Vect {
         Vect toRender();
         // converts from rendering to board coordinates
         Vect toBoard();
-
-    private:
-        int m_x, m_y;
 };

@@ -35,11 +35,23 @@ class Board {
             Piece::WR
         };
 
+        enum HighlightType {
+            TRANSPARENT = 0,
+            GREY,
+            GREEN
+        };
+
         Board();
         ~Board();
+        void start();
         void render();
+        void updateHighlightOnMouseClick(Vect position);
+        bool isValidPosition(Vect position);
 
     private:
         std::map<Piece::ID, sf::Texture> images;
         Piece* board[8][8];
+        HighlightType highlights[8][8];
+        std::vector<Vect> highlighted;
+        sf::RenderWindow* window;
 };
