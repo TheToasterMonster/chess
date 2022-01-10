@@ -55,4 +55,5 @@ class Board {
         void render();
         void updateHighlightOnMouseClick(Vect position);
         std::vector<Vect> calcMoves(Piece* piece);
+        bool isValidPosition(Vect position);
 };

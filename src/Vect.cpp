@@ -59,7 +59,3 @@ Vect Vect::toRender() {
 Vect Vect::toBoard() {
     return *this / 100;
 }
-
-bool Vect::isValidPosition() {
-    return x < 8 && x >= 0 && y < 8 && y >= 0;
-}

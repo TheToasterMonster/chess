@@ -61,6 +61,10 @@ Board::~Board() {
     }
 }
 
+bool Board::isValidPosition(Vect position) {
+    return position.x < 8 && position.x >= 0 && position.y < 8 && position.y >= 0;
+}
+
 void Board::updateHighlightOnMouseClick(Vect position) {
     if (highlights[position.x][position.y] == TRANSPARENT) {
         while (!highlighted.empty()) {
@@ -73,16 +77,9 @@ void Board::updateHighlightOnMouseClick(Vect position) {
         highlighted.push_back(position);
 
         if (board[position.x][position.y]) {
-            switch (board[position.x][position.y]->getType()) {
-                case Piece::PAWN: {
-                    for (Vect move : calcMoves(board[position.x][position.y])) {
-                        highlights[move.x][move.y] = GREEN;
-                        highlighted.push_back(move);
-                    }
-                    break;
-                }
-                default:
-                    break;
+            for (Vect move : calcMoves(board[position.x][position.y])) {
+                highlights[move.x][move.y] = GREEN;
+                highlighted.push_back(move);
             }
         }
     }
@@ -90,24 +87,34 @@ void Board::updateHighlightOnMouseClick(Vect position) {
 
 std::vector<Vect> Board::calcMoves(Piece* piece) {
     std::vector<Vect> possibleMoves;
+    std::vector<Vect> moves;
     switch (piece->getType()) {
         case Piece::PAWN: {
-            for (Vect move : Util::Get().pawnMoves) {
-                Vect newPosition = (piece->getSide() == Piece::WHITE) ? (piece->getLocation() - move) : (piece->getLocation() + move);
-                if (newPosition.isValidPosition()) {
-                    possibleMoves.push_back(newPosition);
-                }
-            }
+            moves = Util::Get().pawnMoves;
+            break;
+        }
+        case Piece::KNIGHT: {
+            moves = Util::Get().knightMoves;
+            break;
+        }
+        case Piece::KING: {
+            moves = Util::Get().kingMoves;
             break;
         }
         default:
             break;
     }
+    for (Vect move : moves) {
+        Vect newPosition = (piece->getSide() == Piece::WHITE) ? (piece->getLocation() - move) : (piece->getLocation() + move);
+        if (isValidPosition(newPosition)) {
+            possibleMoves.push_back(newPosition);
+        }
+    }
     return possibleMoves;
 }
 
 void Board::start() {
-    window = new sf::RenderWindow(sf::VideoMode(800, 800), "Board::");
+    window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
     while (window->isOpen()) {
         sf::Event event;
         while (window->pollEvent(event)) {
@@ -121,7 +128,7 @@ void Board::start() {
                 sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
                 mouseLocation.y -= 1800;
                 Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
-                if (!location.isValidPosition()) {
+                if (!isValidPosition(location)) {
                     continue;
                 }
                 updateHighlightOnMouseClick(location);
