@@ -71,7 +71,7 @@ void Board::render() {
                 sf::RectangleShape square(sf::Vector2f(100, 100));
                 square.setPosition(sf::Vector2f(i * 100, j * 100));
                 if ((i + j) % 2 == 1) {
-                    square.setFillColor(sf::Color(123, 63, 0, 255));
+                    square.setFillColor(sf::Color(149, 110, 87, 255)); // timeless copper #956e57
                 } else {
                     square.setFillColor(sf::Color::White);
                 }
