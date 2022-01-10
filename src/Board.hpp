@@ -55,5 +55,6 @@ class Board {
         void render();
         void updateHighlightOnMouseClick(Vect position);
         std::vector<Vect> calcMoves(Piece* piece);
-        bool isValidPosition(Vect position);
+        bool isValidMousePosition(Vect position);
+        bool isValidPiecePosition(Vect position, Piece::Side side);
 };
