@@ -3,9 +3,10 @@
 
 class Util {
     public:
-        std::vector<Vect> pawnMoves = {
-            Vect(0, 1),
-            Vect(0, 2)
+        Vect pawnMove = Vect(0, 1);
+        std::vector<Vect> pawnCaptures = {
+            Vect(-1, 1),
+            Vect( 1, 1)
         };
 
         std::vector<Vect> knightMoves = {

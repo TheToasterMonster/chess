@@ -112,6 +112,7 @@ void Board::move(Vect start, Vect end) {
 
     board[end.x][end.y] = board[start.x][start.y];
     board[end.x][end.y]->setLocation(end);
+    board[end.x][end.y]->setHasMoved();
     board[start.x][start.y] = nullptr;
 }
 
@@ -121,12 +122,30 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
 
     switch (piece->getType()) {
         case Piece::PAWN: {
+            Vect move;
+            std::vector<Vect> captures;
+
             if (piece->getSide() == Piece::BLACK) {
-                for (Vect move : Util::Get().pawnMoves) {
-                    moves.push_back(Vect(0, 0) - move);
-                }
+                move = Vect(0, 0) - Util::Get().pawnMove;
+                for (Vect capture : Util::Get().pawnCaptures) {
+                    captures.push_back(Vect(0, 0) - capture);
+                } 
             } else {
-                moves = Util::Get().pawnMoves;
+                move = Util::Get().pawnMove;
+                captures = Util::Get().pawnCaptures;
+            }
+
+            if (!board[piece->getLocation().x - move.x][piece->getLocation().y - move.y]) {
+                moves.push_back(move);
+                if (!piece->hasMoved()) {
+                    moves.push_back(move * 2);
+                }
+            }
+            for (Vect capture : captures) {
+                Piece* square = board[piece->getLocation().x - capture.x][piece->getLocation().y - capture.y];
+                if (square && square->getSide() != piece->getSide()) {
+                    moves.push_back(capture);
+                }
             }
             break;
         }

@@ -15,6 +15,7 @@ class Piece {
         };
 
         Piece(Side side, Vect location, Type type);
+
         Side getSide();
         Vect getLocation();
         ID getID();
@@ -23,9 +24,13 @@ class Piece {
         void setLocation(int x, int y);
         ID determineID(Type type, Side side);
 
+        bool hasMoved();
+        void setHasMoved();
+
     private:
         Side m_side;
         Vect m_location;
         ID m_id;
         Type m_type;
+        bool m_hasMoved;
 };

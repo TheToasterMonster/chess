@@ -5,6 +5,7 @@ Piece::Piece(Side side, Vect location, Type type) {
     m_location = location;
     m_id = determineID(type, side);
     m_type = type;
+    m_hasMoved = false;
 }
 
 Piece::Side Piece::getSide() {
@@ -52,4 +53,12 @@ Piece::ID Piece::determineID(Type type, Side side) {
         default:
             return (side == BLACK) ? BR : WR;
     }
+}
+
+bool Piece::hasMoved() {
+    return m_hasMoved;
+}
+
+void Piece::setHasMoved() {
+    m_hasMoved = true; 
 }
