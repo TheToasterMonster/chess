@@ -85,7 +85,7 @@ void Board::start() {
         while (window->pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window->close();
-            } else if (event.type = sf::Event::MouseButtonPressed) {
+            } else if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button != sf::Mouse::Left) {
                     continue;
                 }
