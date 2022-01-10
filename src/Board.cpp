@@ -29,12 +29,12 @@ Board::Board() {
     board[5][0] = new Piece(Piece::BLACK, Vect(5, 0), Piece::BISHOP);
     board[2][7] = new Piece(Piece::WHITE, Vect(2, 7), Piece::BISHOP);
     board[5][7] = new Piece(Piece::WHITE, Vect(5, 7), Piece::BISHOP);
-    // kings
-    board[3][0] = new Piece(Piece::BLACK, Vect(3, 0), Piece::KING);
-    board[3][7] = new Piece(Piece::WHITE, Vect(3, 7), Piece::KING);
     // queens
-    board[4][0] = new Piece(Piece::BLACK, Vect(4, 0), Piece::QUEEN);
-    board[4][7] = new Piece(Piece::WHITE, Vect(4, 7), Piece::QUEEN);
+    board[3][0] = new Piece(Piece::BLACK, Vect(3, 0), Piece::QUEEN);
+    board[3][7] = new Piece(Piece::WHITE, Vect(3, 7), Piece::QUEEN);
+    // kings
+    board[4][0] = new Piece(Piece::BLACK, Vect(4, 0), Piece::KING);
+    board[4][7] = new Piece(Piece::WHITE, Vect(4, 7), Piece::KING);
 
 
     for (int i = 0; i < 12; i++) {
