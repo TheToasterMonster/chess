@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <map>
-#include "Pawn.hpp"
+#include "Pieces.hpp"
+#include "Util.hpp"
+
 
 class Board {
     public:
@@ -41,17 +43,16 @@ class Board {
             GREEN
         };
 
-        Board();
-        ~Board();
-        void start();
-        void render();
-        void updateHighlightOnMouseClick(Vect position);
-        bool isValidPosition(Vect position);
-
-    private:
         std::map<Piece::ID, sf::Texture> images;
         Piece* board[8][8];
         HighlightType highlights[8][8];
         std::vector<Vect> highlighted;
         sf::RenderWindow* window;
+
+        Board();
+        ~Board();
+        void start();
+        void render();
+        void updateHighlightOnMouseClick(Vect position);
+        std::vector<Vect> calcMoves(Piece* piece);
 };

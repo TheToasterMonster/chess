@@ -4,6 +4,7 @@ Piece::Piece(Side side, Vect location, Type type) {
     m_side = side;
     m_location = location;
     m_id = determineID(type, side);
+    m_type = type;
 }
 
 Piece::Side Piece::getSide() {
@@ -16,6 +17,10 @@ Vect Piece::getLocation() {
 
 Piece::ID Piece::getID() {
     return m_id;
+}
+
+Piece::Type Piece::getType() {
+    return m_type;
 }
 
 Piece::ID Piece::determineID(Type type, Side side) {

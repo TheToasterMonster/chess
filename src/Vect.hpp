@@ -18,6 +18,8 @@ class Vect {
 
         // overload on + operator for vectors
         Vect operator+(Vect shift);
+        // overload on + operator for vectors
+        Vect operator-(Vect shift);
         // overload on * operator for vectors
         Vect operator*(int scale);
         // overload on / operator for vectors
@@ -36,4 +38,7 @@ class Vect {
         Vect toRender();
         // converts from rendering to board coordinates
         Vect toBoard();
+
+        // check if position is within bounds of board
+        bool isValidPosition();
 };

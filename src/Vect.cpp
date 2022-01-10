@@ -23,6 +23,10 @@ Vect Vect::operator+(Vect shift) {
     return Vect(x + shift.x, y + shift.y);
 }
 
+Vect Vect::operator-(Vect shift) {
+    return Vect(x - shift.x, y - shift.y);
+}
+
 Vect Vect::operator*(int scale) {
     return Vect(x * scale, y * scale);
 }
@@ -54,4 +58,8 @@ Vect Vect::toRender() {
 
 Vect Vect::toBoard() {
     return *this / 100;
+}
+
+bool Vect::isValidPosition() {
+    return x < 8 && x >= 0 && y < 8 && y >= 0;
 }

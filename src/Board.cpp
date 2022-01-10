@@ -39,8 +39,8 @@ Board::Board() {
 
     for (int i = 0; i < 12; i++) {
         sf::Texture texture;
-        if (texture.loadFromFile(files[i])) {
-            images[ids[i]] = texture;
+        if (texture.loadFromFile(Board::files[i])) {
+            images[Board::ids[i]] = texture;
         }
     }
 
@@ -71,15 +71,43 @@ void Board::updateHighlightOnMouseClick(Vect position) {
 
         highlights[position.x][position.y] = GREY;
         highlighted.push_back(position);
+
+        if (board[position.x][position.y]) {
+            switch (board[position.x][position.y]->getType()) {
+                case Piece::PAWN: {
+                    for (Vect move : calcMoves(board[position.x][position.y])) {
+                        highlights[move.x][move.y] = GREEN;
+                        highlighted.push_back(move);
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
     }
 }
 
-bool Board::isValidPosition(Vect position) {
-    return position.x < 8 && position.x >= 0 && position.y < 8 && position.y >= 0;
+std::vector<Vect> Board::calcMoves(Piece* piece) {
+    std::vector<Vect> possibleMoves;
+    switch (piece->getType()) {
+        case Piece::PAWN: {
+            for (Vect move : Util::Get().pawnMoves) {
+                Vect newPosition = (piece->getSide() == Piece::WHITE) ? (piece->getLocation() - move) : (piece->getLocation() + move);
+                if (newPosition.isValidPosition()) {
+                    possibleMoves.push_back(newPosition);
+                }
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    return possibleMoves;
 }
 
 void Board::start() {
-    window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
+    window = new sf::RenderWindow(sf::VideoMode(800, 800), "Board::");
     while (window->isOpen()) {
         sf::Event event;
         while (window->pollEvent(event)) {
@@ -90,12 +118,12 @@ void Board::start() {
                     continue;
                 }
 
-                sf::Vector2i pixelLocation = sf::Mouse::getPosition();
-                Vect location = Vect(pixelLocation.x, pixelLocation.y).toBoard();
-                if (!isValidPosition(location)) {
+                sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
+                mouseLocation.y -= 1800;
+                Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
+                if (!location.isValidPosition()) {
                     continue;
                 }
-
                 updateHighlightOnMouseClick(location);
             }
         }

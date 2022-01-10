@@ -18,10 +18,12 @@ class Piece {
         Side getSide();
         Vect getLocation();
         ID getID();
+        Type getType();
         ID determineID(Type type, Side side);
 
     private:
         Side m_side;
         Vect m_location;
         ID m_id;
+        Type m_type;
 };
