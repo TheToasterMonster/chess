@@ -40,7 +40,8 @@ class Board {
         enum HighlightType {
             TRANSPARENT = 0,
             GREY,
-            GREEN
+            GREEN,
+            RED
         };
 
         sf::RenderWindow* window;
@@ -53,6 +54,11 @@ class Board {
         std::vector<Vect> highlighted;
         Vect selectedSquare;
         Vect enPassantSquare;
+
+        Piece* whiteKing;
+        Piece* blackKing;
+        bool whiteKingChecked;
+        bool blackKingChecked;
 
         Board();
         ~Board();
@@ -67,4 +73,6 @@ class Board {
         std::vector<Vect> calcMoves(Piece* piece);
         bool isValidMousePosition(Vect position);
         bool isValidPiecePosition(Vect position, Piece::Side side);
+        bool isSquareInCheck(Vect square, Piece::Side side);
+        bool simulatePieceMove(Piece* piece, Vect shift);
 };
