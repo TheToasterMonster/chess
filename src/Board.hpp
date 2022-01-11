@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
-#include "Pieces.hpp"
+#include "Piece.hpp"
 #include "Util.hpp"
 
 

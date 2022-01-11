@@ -26,6 +26,8 @@ class Piece {
 
         bool hasMoved();
         void setHasMoved();
+        
+        void print();
 
     private:
         Side m_side;

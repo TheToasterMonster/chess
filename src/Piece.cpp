@@ -1,4 +1,5 @@
-#include "Pieces.hpp"
+#include <string>
+#include "Piece.hpp"
 
 Piece::Piece(Side side, Vect location, Type type) {
     m_side = side;
@@ -61,4 +62,31 @@ bool Piece::hasMoved() {
 
 void Piece::setHasMoved() {
     m_hasMoved = true; 
+}
+
+void Piece::print() {
+    std::string type;
+    switch (m_type) {
+        case PAWN:
+            type = "Pawn";
+            break;
+        case BISHOP:
+            type = "Bishop";
+            break;
+        case KNIGHT:
+            type = "Knight";
+            break;
+        case ROOK:
+            type = "Rook";
+            break;
+        case QUEEN:
+            type = "Queen";
+            break;
+        case KING:
+            type = "King";
+            break;
+    }
+    std::cout << (m_side == BLACK ? "Black" : "White") << ' ' << type << std::endl;
+    std::cout << "Position: " << m_location.asString() << std::endl;
+    std::cout << std::endl;
 }
