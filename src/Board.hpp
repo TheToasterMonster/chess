@@ -50,6 +50,7 @@ class Board {
         HighlightType highlights[8][8];
         std::vector<Vect> highlighted;
         Vect selectedSquare;
+        Vect enPassantSquare;
 
         Board();
         ~Board();

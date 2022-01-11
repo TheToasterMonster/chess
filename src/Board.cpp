@@ -37,6 +37,7 @@ Board::Board() {
     board[4][7] = new Piece(Piece::WHITE, Vect(4, 7), Piece::KING);
 
 
+    // load piece icons
     for (int i = 0; i < 12; i++) {
         sf::Texture texture;
         if (texture.loadFromFile(Board::files[i])) {
@@ -70,6 +71,7 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
         return false;
     }
 
+    // a piece cannot take over the square of another piece of the same color
     if (board[position.x][position.y] && board[position.x][position.y]->getSide() == side) {
         return false;
     }
@@ -79,6 +81,7 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
 
 void Board::updateHighlightOnMouseClick(Vect position) {
     if (highlights[position.x][position.y] == TRANSPARENT) {
+        // selected a new square, calculate moves for that square if theres a piece
         clearHighlights();
 
         highlights[position.x][position.y] = GREY;
@@ -92,6 +95,7 @@ void Board::updateHighlightOnMouseClick(Vect position) {
             }
         }
     } else if (highlights[position.x][position.y] == GREEN) {
+        // if square is green, this must be a move
         clearHighlights();
         move(selectedSquare, position);
     }
@@ -106,8 +110,38 @@ void Board::clearHighlights() {
 }
 
 void Board::move(Vect start, Vect end) {
+    // remove existing piece if there is one
     if (board[end.x][end.y]) {
         delete(board[end.x][end.y]);
+    } else if (board[start.x][start.y]->getType() == Piece::PAWN && abs(end.y - start.y) == 1 && abs(end.x - start.x) == 1) {
+        // this must be an en passant
+        Vect pieceLocation;
+        if (end.y - start.y == 1) {
+            // must be black
+            pieceLocation = end - Vect(0, 1);
+        } else {
+            // must be white
+            pieceLocation = end + Vect(0, 1);
+        }
+        
+        // ensure there is indeed a piece here
+        if (board[pieceLocation.x][pieceLocation.y]) {
+            delete(board[pieceLocation.x][pieceLocation.y]);
+            board[pieceLocation.x][pieceLocation.y] = nullptr;
+        }
+    }
+
+    // check for a double pawn move
+    if (board[start.x][start.y]->getType() == Piece::PAWN && abs(end.y - start.y) == 2) {
+        if (end.y - start.y == 2) {
+            // must be black pawn
+            enPassantSquare = start + Vect(0, 1);
+        } else {
+            // must be white pawn
+            enPassantSquare = start - Vect(0, 1);
+        }
+    } else {
+        enPassantSquare = Vect(-1, -1);
     }
 
     board[end.x][end.y] = board[start.x][start.y];
@@ -125,6 +159,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             Vect move;
             std::vector<Vect> captures;
 
+            // if square is black, move vectors have to be inverted
             if (piece->getSide() == Piece::BLACK) {
                 move = Vect(0, 0) - Util::Get().pawnMove;
                 for (Vect capture : Util::Get().pawnCaptures) {
@@ -135,15 +170,22 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
                 captures = Util::Get().pawnCaptures;
             }
 
+            // basic move
             if (!board[piece->getLocation().x - move.x][piece->getLocation().y - move.y]) {
                 moves.push_back(move);
+                // double move on first move
                 if (!piece->hasMoved()) {
                     moves.push_back(move * 2);
                 }
             }
+            // diagonal capture moves
             for (Vect capture : captures) {
                 Piece* square = board[piece->getLocation().x - capture.x][piece->getLocation().y - capture.y];
                 if (square && square->getSide() != piece->getSide()) {
+                    moves.push_back(capture);
+                }
+                // check for en passant
+                if (piece->getLocation() - capture == enPassantSquare) {
                     moves.push_back(capture);
                 }
             }
@@ -165,6 +207,9 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
                         break;
                     }
                     moves.push_back(move);
+                    if (board[piece->getLocation().x - move.x][piece->getLocation().y - move.y]) {
+                        break;
+                    }
                 }
             }
             break;
@@ -177,6 +222,9 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
                         break;
                     }
                     moves.push_back(move);
+                    if (board[piece->getLocation().x - move.x][piece->getLocation().y - move.y]) {
+                        break;
+                    }
                 }
             }
             break;
@@ -189,6 +237,9 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
                         break;
                     }
                     moves.push_back(move);
+                    if (board[piece->getLocation().x - move.x][piece->getLocation().y - move.y]) {
+                        break;
+                    }
                 }
             }
             break;

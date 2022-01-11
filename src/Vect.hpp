@@ -17,6 +17,7 @@ class Vect {
         Vect operator*(int scale);
         Vect operator/(int scale);
         void operator+=(Vect shift);
+        bool operator==(Vect other);
 
         std::string asString();
         sf::Vector2f asVector2f();

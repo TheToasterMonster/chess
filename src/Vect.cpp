@@ -40,6 +40,10 @@ void Vect::operator+=(Vect shift) {
     y += shift.y;
 }
 
+bool Vect::operator==(Vect other) {
+    return x == other.x && y == other.y;
+}
+
 std::string Vect::asString() {
     return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }
