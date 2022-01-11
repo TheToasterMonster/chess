@@ -2,5 +2,5 @@
 
 int main() {
     Board game;
-    game.start();
+    game.run();
 }

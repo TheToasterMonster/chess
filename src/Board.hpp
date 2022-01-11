@@ -47,6 +47,8 @@ class Board {
         std::map<Piece::ID, sf::Texture> images;
         Piece* board[8][8];
 
+        Piece::Side turn;
+
         HighlightType highlights[8][8];
         std::vector<Vect> highlighted;
         Vect selectedSquare;
@@ -55,7 +57,7 @@ class Board {
         Board();
         ~Board();
 
-        void start();
+        void run();
         void render();
 
         void updateHighlightOnMouseClick(Vect position);

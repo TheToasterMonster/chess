@@ -37,7 +37,6 @@ Board::Board() {
     board[4][7] = new Piece(Piece::WHITE, Vect(4, 7), Piece::KING);
 
 
-    // load piece icons
     for (int i = 0; i < 12; i++) {
         sf::Texture texture;
         if (texture.loadFromFile(Board::files[i])) {
@@ -50,6 +49,8 @@ Board::Board() {
             highlights[i][j] = TRANSPARENT;
         }
     }
+
+    turn = Piece::WHITE;
 }
 
 Board::~Board() {
@@ -88,7 +89,8 @@ void Board::updateHighlightOnMouseClick(Vect position) {
         selectedSquare = position;
         highlighted.push_back(position);
 
-        if (board[position.x][position.y]) {
+        // check if there's a piece and make sure it's that side's turn
+        if (board[position.x][position.y] && board[position.x][position.y]->getSide() == turn) {
             for (Vect move : calcMoves(board[position.x][position.y])) {
                 highlights[move.x][move.y] = GREEN;
                 highlighted.push_back(move);
@@ -98,6 +100,9 @@ void Board::updateHighlightOnMouseClick(Vect position) {
         // if square is green, this must be a move
         clearHighlights();
         move(selectedSquare, position);
+    } else if (highlights[position.x][position.y] == GREY) {
+        // unselect the square
+        clearHighlights();
     }
 }
 
@@ -148,6 +153,12 @@ void Board::move(Vect start, Vect end) {
     board[end.x][end.y]->setLocation(end);
     board[end.x][end.y]->setHasMoved();
     board[start.x][start.y] = nullptr;
+
+    if (turn == Piece::WHITE) {
+        turn = Piece::BLACK;
+    } else {
+        turn = Piece::WHITE;
+    }
 }
 
 std::vector<Vect> Board::calcMoves(Piece* piece) {
@@ -201,6 +212,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
         }
         case Piece::BISHOP: {
             for (Vect baseMove : Util::Get().bishopMoves) {
+                // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
                     if (!isValidPiecePosition(piece->getLocation() - move, piece->getSide())) {
@@ -216,6 +228,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
         }
         case Piece::ROOK: {
             for (Vect baseMove : Util::Get().rookMoves) {
+                // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
                     if (!isValidPiecePosition(piece->getLocation() - move, piece->getSide())) {
@@ -231,6 +244,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
         }
         case Piece::QUEEN: {
             for (Vect baseMove : Util::Get().queenMoves) {
+                // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
                     if (!isValidPiecePosition(piece->getLocation() - move, piece->getSide())) {
@@ -255,7 +269,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
     return possibleMoves;
 }
 
-void Board::start() {
+void Board::run() {
     window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
     while (window->isOpen()) {
         sf::Event event;
@@ -268,6 +282,7 @@ void Board::start() {
                 }
 
                 sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
+                // weird macos cursor thing
                 mouseLocation.y -= 1800;
                 Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
                 if (!isValidMousePosition(location)) {
