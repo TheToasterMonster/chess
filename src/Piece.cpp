@@ -25,6 +25,11 @@ Piece::Type Piece::getType() {
     return m_type;
 }
 
+void Piece::setType(Type type) {
+    m_type = type;
+    m_id = determineID(m_type, m_side);
+}
+
 void Piece::setLocation(Vect location) {
     m_location = location;
 }

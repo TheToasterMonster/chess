@@ -20,6 +20,7 @@ class Piece {
         Vect getLocation();
         ID getID();
         Type getType();
+        void setType(Type type);
         void setLocation(Vect location);
         void setLocation(int x, int y);
         ID determineID(Type type, Side side);

@@ -204,6 +204,10 @@ void Board::move(Vect start, Vect end) {
     board[end.x][end.y]->setHasMoved();
     board[start.x][start.y] = nullptr;
 
+    if (board[end.x][end.y]->getType() == Piece::PAWN && (end.y == 0 || end.y == 7)) {
+        board[end.x][end.y]->setType(Piece::QUEEN);
+    }
+
     if (turn == Piece::WHITE) {
         // if this move was legal, the king can't be in check
         if (whiteKingChecked) {
