@@ -16,9 +16,13 @@ Board::Board() {
     }
     // rooks
     board[0][0] = new Piece(Piece::BLACK, Vect(0, 0), Piece::ROOK);
+    blackQueenRook = board[0][0];
     board[7][0] = new Piece(Piece::BLACK, Vect(7, 0), Piece::ROOK);
+    blackKingRook = board[7][0];
     board[0][7] = new Piece(Piece::WHITE, Vect(0, 7), Piece::ROOK);
+    whiteQueenRook = board[0][7];
     board[7][7] = new Piece(Piece::WHITE, Vect(7, 7), Piece::ROOK);
+    whiteKingRook = board[7][7];
     // knights
     board[1][0] = new Piece(Piece::BLACK, Vect(1, 0), Piece::KNIGHT);
     board[6][0] = new Piece(Piece::BLACK, Vect(6, 0), Piece::KNIGHT);
@@ -85,9 +89,15 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
 }
 
 void Board::updateHighlightOnMouseClick(Vect position) {
-    if (highlights[position.x][position.y] == TRANSPARENT) {
+    if (highlights[position.x][position.y] == TRANSPARENT || highlights[position.x][position.y] == RED) {
         // selected a new square, calculate moves for that square if theres a piece
         clearHighlights();
+
+        if (turn == Piece::WHITE && whiteKingChecked) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = RED;
+        } else if (turn == Piece::BLACK && blackKingChecked) {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
+        }
 
         highlights[position.x][position.y] = GREY;
         selectedSquare = position;
@@ -107,7 +117,14 @@ void Board::updateHighlightOnMouseClick(Vect position) {
     } else if (highlights[position.x][position.y] == GREY) {
         // unselect the square
         clearHighlights();
+
+        if (turn == Piece::WHITE && whiteKingChecked) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = RED;
+        } else if (turn == Piece::BLACK && blackKingChecked) {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
+        }
     }
+
 }
 
 void Board::clearHighlights() {
@@ -119,8 +136,10 @@ void Board::clearHighlights() {
 }
 
 void Board::move(Vect start, Vect end) {
-    if (board[start.x][start.y] && ((turn == Piece::WHITE) ? whiteKingChecked : blackKingChecked) && board[start.x][start.y]->getType() == Piece::KING) {
-        highlights[start.x][start.y] = TRANSPARENT;
+    if (turn == Piece::WHITE) {
+        highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = TRANSPARENT;
+    } else {
+        highlights[blackKing->getLocation().x][blackKing->getLocation().y] = TRANSPARENT;
     }
 
     // remove existing piece if there is one
@@ -155,6 +174,25 @@ void Board::move(Vect start, Vect end) {
         }
     } else {
         enPassantSquare = Vect(-1, -1);
+    }
+
+    // check for castling
+    if (board[start.x][start.y]->getType() == Piece::KING && abs(end.x - start.x) == 2) {
+        if (end.x - start.x == 2) {
+            // kingside
+            Piece* rook = (turn == Piece::WHITE) ? whiteKingRook : blackKingRook;
+            board[end.x - 1][end.y] = rook;
+            rook->setLocation(end - Vect(1, 0));
+            rook->setHasMoved();
+            board[7][end.y] = nullptr;
+        } else {
+            // queenside
+            Piece* rook = (turn == Piece::WHITE) ? whiteQueenRook : blackQueenRook;
+            board[end.x + 1][end.y] = rook;
+            rook->setLocation(end + Vect(1, 0));
+            rook->setHasMoved();
+            board[0][end.y] = nullptr;
+        }
     }
 
     board[end.x][end.y] = board[start.x][start.y];
@@ -316,6 +354,26 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
         }
         case Piece::KING: {
             moves = Util::Get().kingMoves;
+            // check for castling
+            if (turn == Piece::WHITE) {
+                if (!whiteKing->hasMoved()) {
+                    if (!board[5][7] && !board[6][7] && !whiteKingRook->hasMoved() && !isSquareInCheck(Vect(5, 7), Piece::WHITE)) {
+                        moves.push_back(Vect(-2, 0));
+                    }
+                    if (!board[3][7] && !board[2][7] && !board[1][7] && !whiteQueenRook->hasMoved() && !isSquareInCheck(Vect(3, 7), Piece::WHITE)) {
+                        moves.push_back(Vect(2, 0));
+                    }
+                }
+            } else {
+                if (!blackKing->hasMoved()) {
+                    if (!board[5][0] && !board[6][0] && !blackKingRook->hasMoved() && !isSquareInCheck(Vect(5, 0), Piece::BLACK)) {
+                        moves.push_back(Vect(-2, 0));
+                    }
+                    if (!board[3][0] && !board[2][0] && !board[1][0] && !blackQueenRook->hasMoved() && !isSquareInCheck(Vect(3, 0), Piece::BLACK)) {
+                        moves.push_back(Vect(2, 0));
+                    }
+                }
+            }
             break;
         }
         case Piece::BISHOP: {
@@ -371,7 +429,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
     for (Vect move : moves) {
         Vect newPosition = piece->getLocation() - move;
         if (isValidPiecePosition(newPosition, piece->getSide())) {
-            if ((whiteKingChecked || blackKingChecked) && simulatePieceMove(piece, move)) {
+            if (simulatePieceMove(piece, move)) {
                 continue;
             }
             possibleMoves.push_back(newPosition);

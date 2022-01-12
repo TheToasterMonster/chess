@@ -56,7 +56,11 @@ class Board {
         Vect enPassantSquare;
 
         Piece* whiteKing;
+        Piece* whiteQueenRook;
+        Piece* whiteKingRook;
         Piece* blackKing;
+        Piece* blackQueenRook;
+        Piece* blackKingRook;
         bool whiteKingChecked;
         bool blackKingChecked;
 
@@ -74,5 +78,6 @@ class Board {
         bool isValidMousePosition(Vect position);
         bool isValidPiecePosition(Vect position, Piece::Side side);
         bool isSquareInCheck(Vect square, Piece::Side side);
+        // returns true if the move is invalid
         bool simulatePieceMove(Piece* piece, Vect shift);
 };
