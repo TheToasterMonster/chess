@@ -64,11 +64,7 @@ class Board {
         Vect enPassantSquare;
 
         Piece* whiteKing;
-        Piece* whiteQueenRook;
-        Piece* whiteKingRook;
         Piece* blackKing;
-        Piece* blackQueenRook;
-        Piece* blackKingRook;
         bool whiteKingChecked;
         bool blackKingChecked;
         bool gameOver;

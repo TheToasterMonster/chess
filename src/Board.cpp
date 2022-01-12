@@ -16,13 +16,9 @@ Board::Board() {
     }
     // rooks
     board[0][0] = new Piece(Piece::BLACK, Vect(0, 0), Piece::ROOK);
-    blackQueenRook = board[0][0];
     board[7][0] = new Piece(Piece::BLACK, Vect(7, 0), Piece::ROOK);
-    blackKingRook = board[7][0];
     board[0][7] = new Piece(Piece::WHITE, Vect(0, 7), Piece::ROOK);
-    whiteQueenRook = board[0][7];
     board[7][7] = new Piece(Piece::WHITE, Vect(7, 7), Piece::ROOK);
-    whiteKingRook = board[7][7];
     // knights
     board[1][0] = new Piece(Piece::BLACK, Vect(1, 0), Piece::KNIGHT);
     board[6][0] = new Piece(Piece::BLACK, Vect(6, 0), Piece::KNIGHT);
@@ -183,15 +179,15 @@ void Board::move(Vect start, Vect end) {
     // check for castling
     if (board[start.x][start.y]->getType() == Piece::KING && abs(end.x - start.x) == 2) {
         if (end.x - start.x == 2) {
-            // kingside
-            Piece* rook = (turn == Piece::WHITE) ? whiteKingRook : blackKingRook;
+            // kingside - white rook at (7, 7), black rook at (7, 0)
+            Piece* rook = (turn == Piece::WHITE) ? board[7][7] : board[7][0];
             board[end.x - 1][end.y] = rook;
             rook->setLocation(end - Vect(1, 0));
             rook->setHasMoved();
             board[7][end.y] = nullptr;
         } else {
-            // queenside
-            Piece* rook = (turn == Piece::WHITE) ? whiteQueenRook : blackQueenRook;
+            // queenside - white rook at (0, 7), black rook at (0, 0)
+            Piece* rook = (turn == Piece::WHITE) ? board[0][7] : board[0][0];
             board[end.x + 1][end.y] = rook;
             rook->setLocation(end + Vect(1, 0));
             rook->setHasMoved();
