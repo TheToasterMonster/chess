@@ -58,6 +58,7 @@ Board::Board() {
 
     whiteKingChecked = false;
     blackKingChecked = false;
+    gameOver = false;
     turn = Piece::WHITE;
 }
 
@@ -89,6 +90,10 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
 }
 
 void Board::updateHighlightOnMouseClick(Vect position) {
+    if (gameOver) {
+        return;
+    }
+
     if (highlights[position.x][position.y] == TRANSPARENT || highlights[position.x][position.y] == RED) {
         // selected a new square, calculate moves for that square if theres a piece
         clearHighlights();
@@ -124,7 +129,6 @@ void Board::updateHighlightOnMouseClick(Vect position) {
             highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
         }
     }
-
 }
 
 void Board::clearHighlights() {
@@ -225,10 +229,33 @@ void Board::move(Vect start, Vect end) {
             highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
         }
     }
+
+    GameState gameState = getGameState();
+    if (gameState == CHECKMATE) {
+        if (turn == Piece::WHITE) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = ORANGE;
+        } else {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = ORANGE;
+        }
+        gameOver = true;
+        return;
+    } else if (gameState == STALEMATE) {
+        if (turn == Piece::WHITE) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = WHITE;
+        } else {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = WHITE;
+        }
+        gameOver = true;
+        return;
+    }
 }
 
 bool Board::isSquareInCheck(Vect square, Piece::Side side) {
     for (Vect move : Util::Get().pawnCaptures) {
+        if (side == Piece::BLACK) {
+            move = Vect(0, 0) - move;
+        }
+
         if (isValidPiecePosition(square - move, side) && board[square.x - move.x][square.y - move.y]) {
             Piece::Type enemyPiece = board[square.x - move.x][square.y - move.y]->getType();
             if (enemyPiece == Piece::PAWN || enemyPiece == Piece::BISHOP || enemyPiece == Piece::QUEEN) {
@@ -337,13 +364,15 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             }
             // diagonal capture moves
             for (Vect capture : captures) {
-                Piece* square = board[piece->getLocation().x - capture.x][piece->getLocation().y - capture.y];
-                if (square && square->getSide() != piece->getSide()) {
-                    moves.push_back(capture);
-                }
-                // check for en passant
-                if (piece->getLocation() - capture == enPassantSquare) {
-                    moves.push_back(capture);
+                if (isValidPiecePosition(piece->getLocation() - capture, piece->getSide())) {
+                    Piece* square = board[piece->getLocation().x - capture.x][piece->getLocation().y - capture.y];
+                    if (square && square->getSide() != piece->getSide()) {
+                        moves.push_back(capture);
+                    }
+                    // check for en passant
+                    if (piece->getLocation() - capture == enPassantSquare) {
+                        moves.push_back(capture);
+                    }
                 }
             }
             break;
@@ -438,6 +467,24 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
     return possibleMoves;
 }
 
+Board::GameState Board::getGameState() {
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (board[i][j] && board[i][j]->getSide() == turn) {
+                if (calcMoves(board[i][j]).size() > 0) {
+                    return ONGOING;
+                }
+            }
+        }
+    }
+
+    if (turn == Piece::WHITE) {
+        return (whiteKingChecked) ? CHECKMATE : STALEMATE;
+    } else {
+        return (blackKingChecked) ? CHECKMATE : STALEMATE;
+    }
+}
+
 void Board::run() {
     window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
     while (window->isOpen()) {
@@ -493,8 +540,12 @@ void Board::render() {
                     highlight.setFillColor(sf::Color(50, 50, 50, 150));
                 } else if (highlights[i][j] == GREEN) {
                     highlight.setFillColor(sf::Color(50, 205, 50, 150));
-                } else {
+                } else if (highlights[i][j] == ORANGE) {
+                    highlight.setFillColor(sf::Color(255, 165, 0, 150));
+                } else if (highlights[i][j] == RED) {
                     highlight.setFillColor(sf::Color(255, 0, 0, 150));
+                } else if (highlights[i][j] == WHITE) {
+                    highlight.setFillColor(sf::Color(255, 250, 250, 150));
                 }
                 window->draw(highlight);
             }

@@ -41,7 +41,15 @@ class Board {
             TRANSPARENT = 0,
             GREY,
             GREEN,
-            RED
+            ORANGE,
+            RED,
+            WHITE
+        };
+
+        enum GameState {
+            ONGOING = 0,
+            CHECKMATE,
+            STALEMATE
         };
 
         sf::RenderWindow* window;
@@ -63,6 +71,7 @@ class Board {
         Piece* blackKingRook;
         bool whiteKingChecked;
         bool blackKingChecked;
+        bool gameOver;
 
         Board();
         ~Board();
@@ -80,4 +89,6 @@ class Board {
         bool isSquareInCheck(Vect square, Piece::Side side);
         // returns true if the move is invalid
         bool simulatePieceMove(Piece* piece, Vect shift);
+
+        GameState getGameState();
 };
