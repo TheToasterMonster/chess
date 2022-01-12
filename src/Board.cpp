@@ -357,19 +357,19 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             // check for castling
             if (turn == Piece::WHITE) {
                 if (!whiteKing->hasMoved()) {
-                    if (!board[5][7] && !board[6][7] && !whiteKingRook->hasMoved() && !isSquareInCheck(Vect(5, 7), Piece::WHITE)) {
+                    if (!whiteKingChecked && !board[5][7] && !board[6][7] && board[7][7] && board[7][7]->getID() == Piece::WR && !board[7][7]->hasMoved() && !isSquareInCheck(Vect(5, 7), Piece::WHITE)) {
                         moves.push_back(Vect(-2, 0));
                     }
-                    if (!board[3][7] && !board[2][7] && !board[1][7] && !whiteQueenRook->hasMoved() && !isSquareInCheck(Vect(3, 7), Piece::WHITE)) {
+                    if (!whiteKingChecked && !board[3][7] && !board[2][7] && !board[1][7] && board[0][7] && board[0][7]->getID() == Piece::WR && !board[0][7]->hasMoved() && !isSquareInCheck(Vect(3, 7), Piece::WHITE)) {
                         moves.push_back(Vect(2, 0));
                     }
                 }
             } else {
                 if (!blackKing->hasMoved()) {
-                    if (!board[5][0] && !board[6][0] && !blackKingRook->hasMoved() && !isSquareInCheck(Vect(5, 0), Piece::BLACK)) {
+                    if (!blackKingChecked && !board[5][0] && !board[6][0] && board[7][0] && board[7][0]->getID() == Piece::BR && !board[7][0]->hasMoved() && !isSquareInCheck(Vect(5, 0), Piece::BLACK)) {
                         moves.push_back(Vect(-2, 0));
                     }
-                    if (!board[3][0] && !board[2][0] && !board[1][0] && !blackQueenRook->hasMoved() && !isSquareInCheck(Vect(3, 0), Piece::BLACK)) {
+                    if (!blackKingChecked && !board[3][0] && !board[2][0] && !board[1][0] && board[0][0] && board[0][0]->getID() == Piece::BR && !board[0][0]->hasMoved() && !isSquareInCheck(Vect(3, 0), Piece::BLACK)) {
                         moves.push_back(Vect(2, 0));
                     }
                 }
