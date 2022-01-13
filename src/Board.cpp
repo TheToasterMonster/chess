@@ -285,6 +285,9 @@ bool Board::isSquareInCheck(Vect square, Piece::Side side) {
             if (enemyPiece == Piece::ROOK || enemyPiece == Piece::QUEEN) {
                 return true;
             }
+            if (i == 1 && enemyPiece == Piece::KING) {
+                return true;
+            }
 
             if (board[square.x - move.x][square.y - move.y]) {
                 break;
@@ -304,6 +307,9 @@ bool Board::isSquareInCheck(Vect square, Piece::Side side) {
 
             Piece::Type enemyPiece = board[square.x - move.x][square.y - move.y]->getType();
             if (enemyPiece == Piece::BISHOP || enemyPiece == Piece::QUEEN) {
+                return true;
+            }
+            if (i == 1 && enemyPiece == Piece::KING) {
                 return true;
             }
 
