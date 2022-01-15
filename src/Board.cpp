@@ -62,7 +62,7 @@ Board::~Board() {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (board[i][j]) {
-                delete(board[i][j]);
+                delete board[i][j];
             }
         }
     }
@@ -144,7 +144,8 @@ void Board::move(Vect start, Vect end) {
 
     // remove existing piece if there is one
     if (board[end.x][end.y]) {
-        delete(board[end.x][end.y]);
+        delete board[end.x][end.y];
+        board[end.x][end.y] = nullptr;
     } else if (board[start.x][start.y]->getType() == Piece::PAWN && abs(end.y - start.y) == 1 && abs(end.x - start.x) == 1) {
         // this must be an en passant
         Vect pieceLocation;
@@ -158,7 +159,7 @@ void Board::move(Vect start, Vect end) {
         
         // ensure there is indeed a piece here
         if (board[pieceLocation.x][pieceLocation.y]) {
-            delete(board[pieceLocation.x][pieceLocation.y]);
+            delete board[pieceLocation.x][pieceLocation.y];
             board[pieceLocation.x][pieceLocation.y] = nullptr;
         }
     }
@@ -505,7 +506,7 @@ void Board::run() {
 
                 sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
                 // weird macos cursor thing
-                mouseLocation.y -= 1800;
+                // mouseLocation.y -= 1800;
                 Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
                 if (!isValidMousePosition(location)) {
                     continue;
@@ -516,7 +517,7 @@ void Board::run() {
 
         render();
     }
-    delete(window);
+    delete window;
 }
 
 void Board::render() {
