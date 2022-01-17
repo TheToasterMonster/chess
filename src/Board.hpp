@@ -4,7 +4,6 @@
 #include "Piece.hpp"
 #include "Util.hpp"
 
-
 class Board {
     public:
         std::string files[12] = {
@@ -75,16 +74,16 @@ class Board {
         void run();
         void render();
 
-        void updateHighlightOnMouseClick(Vect position);
+        void updateHighlightOnMouseClick(const Vect& position);
         void clearHighlights();
-        void move(Vect start, Vect end);
+        void move(const Vect& start, const Vect& end);
 
         std::vector<Vect> calcMoves(Piece* piece);
-        bool isValidMousePosition(Vect position);
-        bool isValidPiecePosition(Vect position, Piece::Side side);
-        bool isSquareInCheck(Vect square, Piece::Side side);
+        bool isValidMousePosition(const Vect& position);
+        bool isValidPiecePosition(const Vect& position, Piece::Side side);
+        bool isSquareInCheck(const Vect& square, Piece::Side side);
         // returns true if the move is invalid
-        bool simulatePieceMove(Piece* piece, Vect shift);
+        bool simulatePieceMove(Piece* piece, const Vect& shift);
 
         GameState getGameState();
 };

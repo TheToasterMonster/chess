@@ -68,11 +68,11 @@ Board::~Board() {
     }
 }
 
-bool Board::isValidMousePosition(Vect position) {
+bool Board::isValidMousePosition(const Vect& position) {
     return position.x < 8 && position.x >= 0 && position.y < 8 && position.y >= 0;
 }
 
-bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
+bool Board::isValidPiecePosition(const Vect& position, Piece::Side side) {
     if (!(position.x < 8 && position.x >= 0 && position.y < 8 && position.y >= 0)) {
         return false;
     }
@@ -85,7 +85,7 @@ bool Board::isValidPiecePosition(Vect position, Piece::Side side) {
     return true;
 }
 
-void Board::updateHighlightOnMouseClick(Vect position) {
+void Board::updateHighlightOnMouseClick(const Vect& position) {
     if (gameOver) {
         return;
     }
@@ -135,7 +135,7 @@ void Board::clearHighlights() {
     }
 }
 
-void Board::move(Vect start, Vect end) {
+void Board::move(const Vect& start, const Vect& end) {
     if (turn == Piece::WHITE) {
         highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = TRANSPARENT;
     } else {
@@ -251,7 +251,7 @@ void Board::move(Vect start, Vect end) {
     }
 }
 
-bool Board::isSquareInCheck(Vect square, Piece::Side side) {
+bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
     for (Vect move : Util::Get().pawnCaptures) {
         if (side == Piece::BLACK) {
             move = Vect(0, 0) - move;
@@ -322,7 +322,7 @@ bool Board::isSquareInCheck(Vect square, Piece::Side side) {
     return false;
 }
 
-bool Board::simulatePieceMove(Piece* piece, Vect shift) {
+bool Board::simulatePieceMove(Piece* piece, const Vect& shift) {
     Vect newPos = piece->getLocation() - shift;
     Piece* tmp = nullptr;
     if (board[newPos.x][newPos.y]) {

@@ -9,22 +9,22 @@ class Vect {
         Vect();
         Vect(int x, int y);
 
-        int getX();
-        int getY();
+        int getX() const;
+        int getY() const;
 
-        Vect operator+(Vect shift);
-        Vect operator-(Vect shift);
-        Vect operator*(int scale);
-        Vect operator/(int scale);
-        void operator+=(Vect shift);
-        bool operator==(Vect other);
+        Vect operator+(const Vect& shift) const;
+        Vect operator-(const Vect& shift) const;
+        Vect operator*(int scale) const;
+        Vect operator/(int scale) const;
+        void operator+=(const Vect& shift);
+        bool operator==(const Vect& other);
 
-        std::string asString();
-        sf::Vector2f asVector2f();
-        void print();
+        std::string asString() const;
+        sf::Vector2f asVector2f() const;
+        void print() const;
 
         // converts from board to rendering coordinates
-        Vect toRender();
+        Vect toRender() const;
         // converts from rendering to board coordinates
-        Vect toBoard();
+        Vect toBoard() const;
 };
