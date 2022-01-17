@@ -506,7 +506,9 @@ void Board::run() {
 
                 sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
                 // weird macos cursor thing
-                // mouseLocation.y -= 1800;
+                #ifdef MAC
+                mouseLocation.y -= 1800;
+                #endif
                 Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
                 if (!isValidMousePosition(location)) {
                     continue;
