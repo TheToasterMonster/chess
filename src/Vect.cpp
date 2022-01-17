@@ -1,5 +1,6 @@
 #include <string>
 #include "Vect.hpp"
+#include "BoardSize.hpp"
 
 Vect::Vect() {
     x = -1;
@@ -57,9 +58,9 @@ void Vect::print() const {
 }
 
 Vect Vect::toRender() const {
-    return *this * 100;
+    return *this * Chess::boardSize;
 }
 
 Vect Vect::toBoard() const {
-    return *this / 100;
+    return *this / Chess::boardSize;
 }

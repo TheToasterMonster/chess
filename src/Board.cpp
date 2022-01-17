@@ -1,4 +1,5 @@
 #include "Board.hpp"
+#include "BoardSize.hpp"
 
 Board::Board() {
     for (int i = 0; i < 8; i++) {
@@ -531,8 +532,8 @@ void Board::render() {
     window->clear();
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            sf::RectangleShape square(sf::Vector2f(100, 100));
-            square.setPosition(sf::Vector2f(i * 100, j * 100));
+            sf::RectangleShape square(sf::Vector2f(Chess::boardSize, Chess::boardSize));
+            square.setPosition(sf::Vector2f(i * Chess::boardSize, j * Chess::boardSize));
             if ((i + j) % 2 == 1) {
                 square.setFillColor(sf::Color(149, 110, 87, 255)); // timeless copper #956e57
             } else {
@@ -548,8 +549,8 @@ void Board::render() {
             }
 
             if (highlights[i][j]) {
-                sf::RectangleShape highlight(sf::Vector2f(100, 100));
-                highlight.setPosition(sf::Vector2f(i * 100, j * 100));
+                sf::RectangleShape highlight(sf::Vector2f(Chess::boardSize, Chess::boardSize));
+                highlight.setPosition(sf::Vector2f(i * Chess::boardSize, j * Chess::boardSize));
                 if (highlights[i][j] == GREY) {
                     highlight.setFillColor(sf::Color(50, 50, 50, 150));
                 } else if (highlights[i][j] == GREEN) {
