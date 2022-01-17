@@ -494,9 +494,10 @@ Board::GameState Board::getGameState() {
 
 void Board::run() {
     window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
+    render();
     while (window->isOpen()) {
         sf::Event event;
-        while (window->pollEvent(event)) {
+        if (window->waitEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window->close();
             } else if (event.type == sf::Event::MouseButtonPressed) {
@@ -505,9 +506,13 @@ void Board::run() {
                 }
 
                 sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
-                // weird macos cursor thing
+                // weird cursor stuff
                 #ifdef MAC
                 mouseLocation.y -= 1800;
+                #endif
+                #ifdef WINDOWS
+                mouseLocation.x -= 8;
+                mouseLocation.y -= 30;
                 #endif
                 Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
                 if (!isValidMousePosition(location)) {

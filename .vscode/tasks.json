@@ -87,6 +87,7 @@
                 "-lsfml-window-2",
                 "-lsfml-system-2",
                 "-std=c++17",
+                "-DWINDOWS",
                 "-O2",
                 "-o",
                 "${workspaceFolder}/main.exe"
