@@ -542,7 +542,7 @@ void Board::render() {
             window->draw(square);
 
             if (board[i][j]) {
-                Piece* piece= board[i][j];
+                Piece* piece = board[i][j];
                 sf::Sprite sprite(images[piece->getID()]);
                 sprite.setPosition(piece->getLocation().toRender().asVector2f());
                 window->draw(sprite);
