@@ -107,7 +107,7 @@ void Board::updateHighlightOnMouseClick(const Vect& position) {
 
         // check if there's a piece and make sure it's that side's turn
         if (board[position.x][position.y] && board[position.x][position.y]->getSide() == turn) {
-            for (Vect move : calcMoves(board[position.x][position.y])) {
+            for (const Vect& move : calcMoves(board[position.x][position.y])) {
                 highlights[move.x][move.y] = GREEN;
                 highlighted.push_back(move);
             }
@@ -265,14 +265,14 @@ bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
             }
         }
     }
-    for (Vect move : Util::Get().knightMoves) {
+    for (const Vect& move : Util::Get().knightMoves) {
         if (isValidPiecePosition(square - move, side) && board[square.x - move.x][square.y - move.y]) {
             if (board[square.x - move.x][square.y - move.y]->getType() == Piece::KNIGHT) {
                 return true;
             }
         }
     }
-    for (Vect baseMove : Util::Get().rookMoves) {
+    for (const Vect& baseMove : Util::Get().rookMoves) {
         // check until a piece is hit
         for (int i = 1; i < 8; i++) {
             Vect move = baseMove * i;
@@ -296,7 +296,7 @@ bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
             }
         }
     }
-    for (Vect baseMove : Util::Get().bishopMoves) {
+    for (const Vect& baseMove : Util::Get().bishopMoves) {
         // check until a piece is hit
         for (int i = 1; i < 8; i++) {
             Vect move = baseMove * i;
@@ -354,7 +354,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             // if square is black, move vectors have to be inverted
             if (piece->getSide() == Piece::BLACK) {
                 move = Vect(0, 0) - Util::Get().pawnMove;
-                for (Vect capture : Util::Get().pawnCaptures) {
+                for (const Vect& capture : Util::Get().pawnCaptures) {
                     captures.push_back(Vect(0, 0) - capture);
                 } 
             } else {
@@ -371,7 +371,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
                 }
             }
             // diagonal capture moves
-            for (Vect capture : captures) {
+            for (const Vect& capture : captures) {
                 if (isValidPiecePosition(piece->getLocation() - capture, piece->getSide())) {
                     Piece* square = board[piece->getLocation().x - capture.x][piece->getLocation().y - capture.y];
                     if (square && square->getSide() != piece->getSide()) {
@@ -414,7 +414,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             break;
         }
         case Piece::BISHOP: {
-            for (Vect baseMove : Util::Get().bishopMoves) {
+            for (const Vect& baseMove : Util::Get().bishopMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
@@ -430,7 +430,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             break;
         }
         case Piece::ROOK: {
-            for (Vect baseMove : Util::Get().rookMoves) {
+            for (const Vect& baseMove : Util::Get().rookMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
@@ -446,7 +446,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             break;
         }
         case Piece::QUEEN: {
-            for (Vect baseMove : Util::Get().queenMoves) {
+            for (const Vect& baseMove : Util::Get().queenMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
                     Vect move = baseMove * i;
@@ -463,7 +463,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
         }
     }
 
-    for (Vect move : moves) {
+    for (const Vect& move : moves) {
         Vect newPosition = piece->getLocation() - move;
         if (isValidPiecePosition(newPosition, piece->getSide())) {
             if (simulatePieceMove(piece, move)) {
