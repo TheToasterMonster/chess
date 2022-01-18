@@ -9,19 +9,19 @@ Piece::Piece(Side side, Vect location, Type type) {
     m_hasMoved = false;
 }
 
-Piece::Side Piece::getSide() {
+Piece::Side Piece::getSide() const {
     return m_side;
 }
 
-Vect Piece::getLocation() {
+const Vect& Piece::getLocation() const {
     return m_location;
 }
 
-Piece::ID Piece::getID() {
+Piece::ID Piece::getID() const {
     return m_id;
 }
 
-Piece::Type Piece::getType() {
+Piece::Type Piece::getType() const {
     return m_type;
 }
 
@@ -39,7 +39,7 @@ void Piece::setLocation(int x, int y) {
     m_location.y = y;
 }
 
-Piece::ID Piece::determineID(Type type, Side side) {
+Piece::ID Piece::determineID(Type type, Side side) const {
     switch (type) {
         case BISHOP:
             return (side == BLACK) ? BB : WB;
@@ -61,7 +61,7 @@ Piece::ID Piece::determineID(Type type, Side side) {
     }
 }
 
-bool Piece::hasMoved() {
+bool Piece::hasMoved() const {
     return m_hasMoved;
 }
 
@@ -69,7 +69,7 @@ void Piece::setHasMoved() {
     m_hasMoved = true; 
 }
 
-void Piece::print() {
+void Piece::print() const {
     std::string type;
     switch (m_type) {
         case PAWN:

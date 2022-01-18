@@ -41,7 +41,7 @@ void Vect::operator+=(const Vect& shift) {
     y += shift.y;
 }
 
-bool Vect::operator==(const Vect& other) {
+bool Vect::operator==(const Vect& other) const {
     return x == other.x && y == other.y;
 }
 

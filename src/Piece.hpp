@@ -16,19 +16,19 @@ class Piece {
 
         Piece(Side side, Vect location, Type type);
 
-        Side getSide();
-        Vect getLocation();
-        ID getID();
-        Type getType();
+        Side getSide() const;
+        const Vect& getLocation() const;
+        ID getID() const;
+        Type getType() const;
         void setType(Type type);
         void setLocation(Vect location);
         void setLocation(int x, int y);
-        ID determineID(Type type, Side side);
+        ID determineID(Type type, Side side) const;
 
-        bool hasMoved();
+        bool hasMoved() const;
         void setHasMoved();
         
-        void print();
+        void print() const;
 
     private:
         Side m_side;
