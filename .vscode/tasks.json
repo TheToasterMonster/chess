@@ -81,8 +81,8 @@
             "args": [
                 "${workspaceFolder}/main.cpp",
                 "${workspaceFolder}/src/**.cpp",
-                "-IC:/Dev/SFML-2.5.1/include",
-                "-LC:/Dev/SFML-2.5.1/bin",
+                "-IC:/Dev/Libraries/SFML-2.5.1/include",
+                "-LC:/Dev/Libraries/SFML-2.5.1/bin",
                 "-lsfml-graphics-2",
                 "-lsfml-window-2",
                 "-lsfml-system-2",
