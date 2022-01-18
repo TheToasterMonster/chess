@@ -3,14 +3,14 @@
 
 class Piece {
     public:
-        enum Type {
+        enum Type : uint8_t {
             BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK
         };
-        enum ID {
+        enum ID : uint8_t {
             BB, BK, BN, BP, BQ, BR,
             WB, WK, WN, WP, WQ, WR
         };
-        enum Side {
+        enum Side : uint8_t {
             WHITE = 0, BLACK = 1
         };
 

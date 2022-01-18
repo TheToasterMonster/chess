@@ -36,7 +36,7 @@ class Board {
             Piece::WR
         };
 
-        enum HighlightType {
+        enum HighlightType : uint8_t {
             TRANSPARENT = 0,
             GREY,
             GREEN,
@@ -45,7 +45,7 @@ class Board {
             WHITE
         };
 
-        enum GameState {
+        enum GameState : uint8_t {
             ONGOING = 0,
             CHECKMATE,
             STALEMATE
