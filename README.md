@@ -1,10 +1,13 @@
 # Chess
 
 ## Description
+Chess client written in C++.
+
+## Requirements
 - C++17
 - SFML 2.5.1
-- 64-bit only
-- Windows (g++), macOS (clang++), Linux (g++) all supported
+- 64-bit CPU and operating system
+- Windows (g++), macOS (clang++), Linux (g++)
 
 ## Setup
 Clone the repository.
