@@ -9,7 +9,7 @@
 ## Setup
 Clone the repository.
    ```
-   git clone https://github.com/TheToasterMonster/french-trivia-bingo.git
+   git clone https://github.com/TheToasterMonster/chess.git
    ```
 Open the project with Visual Studio Code (VSCode).
 
