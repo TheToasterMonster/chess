@@ -16,7 +16,7 @@ Clone the repository.
    ```
 Open the project with Visual Studio Code (VSCode).
 
-If Windows, ake sure SFML files are located at `C:\Dev\Libraries`.
+If Windows, make sure SFML files are located at `C:\Dev\Libraries`.
 
 Run build task (`CTRL SHIFT B` in Windows or `CMD SHIFT B` in macOS) in VSCode, choose "build" (NOT "debug") configuration for corresponding operating system.
 
