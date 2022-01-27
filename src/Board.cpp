@@ -202,8 +202,10 @@ void Board::move(const Vect& start, const Vect& end) {
     board[end.x][end.y]->setHasMoved();
     board[start.x][start.y] = nullptr;
 
+    // promotion
     if (board[end.x][end.y]->getType() == Piece::PAWN && (end.y == 0 || end.y == 7)) {
-        board[end.x][end.y]->setType(Piece::QUEEN);
+        // board[end.x][end.y]->setType(Piece::QUEEN);
+        promote(board[end.x][end.y]);
     }
 
     if (turn == Piece::WHITE) {
@@ -249,6 +251,78 @@ void Board::move(const Vect& start, const Vect& end) {
         }
         gameOver = true;
         return;
+    }
+}
+
+void Board::promote(Piece* piece) {
+    Piece::ID arr[4];
+    arr[0] = (turn == Piece::WHITE) ? Piece::WQ : Piece::BQ;
+    arr[1] = (turn == Piece::WHITE) ? Piece::WB : Piece::BB;
+    arr[2] = (turn == Piece::WHITE) ? Piece::WN : Piece::BN;
+    arr[3] = (turn == Piece::WHITE) ? Piece::WR : Piece::BR;
+
+    for (int i = 0; i < 4; i++) {
+        sf::RectangleShape square(sf::Vector2f(Chess::squareSize, Chess::squareSize));
+        square.setPosition(sf::Vector2f((i + 4) * Chess::squareSize, 0));
+        if (i % 2 == 0) {
+            square.setFillColor(sf::Color(149, 110, 87, 255));
+        } else {
+            square.setFillColor(sf::Color::White);
+        }
+        window->draw(square);
+
+        sf::RectangleShape highlight(sf::Vector2f(Chess::squareSize, Chess::squareSize));
+        highlight.setPosition(sf::Vector2f((i + 4) * Chess::squareSize, 0));
+        highlight.setFillColor(sf::Color(255, 255, 0, 150));
+        window->draw(highlight);
+
+        sf::Sprite sprite(images[arr[i]]);
+        sprite.setPosition(Vect((i + 4) * Chess::squareSize, 0).asVector2f());
+        window->draw(sprite);
+    }
+    window->display();
+
+    sf::Event event;
+    while (window->waitEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window->close();
+        } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2i mouseLocation = sf::Mouse::getPosition() - window->getPosition();
+            #ifdef MAC
+            mouseLocation.y -= 1800;
+            #endif
+            #ifdef WINDOWS
+            mouseLocation.x -= 8;
+            mouseLocation.y -= 30;
+            #endif
+            Vect location = Vect(mouseLocation.x, mouseLocation.y).toBoard();
+            if (!isValidMousePosition(location) || location.y != 0 || location.x < 4) {
+                continue;
+            }
+
+            switch (location.x - 4) {
+                case 0: {
+                    piece->setType(Piece::QUEEN);
+                    break;
+                }
+                case 1: {
+                    piece->setType(Piece::BISHOP);
+                    break;
+                }
+                case 2: {
+                    piece->setType(Piece::KNIGHT);
+                    break;
+                }
+                case 3: {
+                    piece->setType(Piece::ROOK);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+            break;
+        }
     }
 }
 
@@ -532,8 +606,8 @@ void Board::render() {
     window->clear();
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            sf::RectangleShape square(sf::Vector2f(Chess::boardSize, Chess::boardSize));
-            square.setPosition(sf::Vector2f(i * Chess::boardSize, j * Chess::boardSize));
+            sf::RectangleShape square(sf::Vector2f(Chess::squareSize, Chess::squareSize));
+            square.setPosition(sf::Vector2f(i * Chess::squareSize, j * Chess::squareSize));
             if ((i + j) % 2 == 1) {
                 square.setFillColor(sf::Color(149, 110, 87, 255)); // timeless copper #956e57
             } else {
@@ -549,8 +623,8 @@ void Board::render() {
             }
 
             if (highlights[i][j]) {
-                sf::RectangleShape highlight(sf::Vector2f(Chess::boardSize, Chess::boardSize));
-                highlight.setPosition(sf::Vector2f(i * Chess::boardSize, j * Chess::boardSize));
+                sf::RectangleShape highlight(sf::Vector2f(Chess::squareSize, Chess::squareSize));
+                highlight.setPosition(sf::Vector2f(i * Chess::squareSize, j * Chess::squareSize));
                 if (highlights[i][j] == GREY) {
                     highlight.setFillColor(sf::Color(50, 50, 50, 150));
                 } else if (highlights[i][j] == GREEN) {
