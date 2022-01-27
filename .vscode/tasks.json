@@ -79,18 +79,18 @@
             "label": "C/C++: build (Windows)",
             "command": "g++",
             "args": [
-                "${workspaceFolder}/main.cpp",
-                "${workspaceFolder}/src/**.cpp",
-                "-IC:/Dev/Libraries/SFML-2.5.1/include",
-                "-LC:/Dev/Libraries/SFML-2.5.1/bin",
-                "-lsfml-graphics-2",
-                "-lsfml-window-2",
-                "-lsfml-system-2",
+                "${workspaceFolder}\\main.cpp",
+                "${workspaceFolder}\\src\\**.cpp",
+                "-I${workspaceFolder}\\dependencies\\SFML-2.5.1\\Windows\\include",
+                "-L${workspaceFolder}\\dependencies\\SFML-2.5.1\\Windows\\lib",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
                 "-std=c++17",
                 "-DWINDOWS",
                 "-O2",
                 "-o",
-                "${workspaceFolder}/main.exe"
+                "${workspaceFolder}/bin/main.exe"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
