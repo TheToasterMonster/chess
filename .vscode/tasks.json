@@ -18,7 +18,7 @@
                 "-std=c++17",
                 "-DMAC",
                 "-o",
-                "${workspaceFolder}/main"
+                "${workspaceFolder}/bin/main"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -45,7 +45,7 @@
                 "-DMAC",
                 "-O2",
                 "-o",
-                "${workspaceFolder}/main"
+                "${workspaceFolder}/bin/main"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -60,13 +60,15 @@
             "args": [
                 "${workspaceFolder}/main.cpp",
                 "${workspaceFolder}/src/**.cpp",
+                "-I${workspaceFolder}/dependencies/SFML-2.5.1/include",
+                "-L${workspaceFolder}/dependencies/SFML-2.5.1/lib",
                 "-lsfml-graphics",
                 "-lsfml-window",
                 "-lsfml-system",
                 "-std=c++17",
                 "-O2",
                 "-o",
-                "${workspaceFolder}/main"
+                "${workspaceFolder}/bin/main"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -81,8 +83,8 @@
             "args": [
                 "${workspaceFolder}\\main.cpp",
                 "${workspaceFolder}\\src\\**.cpp",
-                "-I${workspaceFolder}\\dependencies\\SFML-2.5.1\\Windows\\include",
-                "-L${workspaceFolder}\\dependencies\\SFML-2.5.1\\Windows\\lib",
+                "-I${workspaceFolder}\\dependencies\\SFML-2.5.1\\include",
+                "-L${workspaceFolder}\\dependencies\\SFML-2.5.1\\lib",
                 "-lsfml-graphics",
                 "-lsfml-window",
                 "-lsfml-system",
