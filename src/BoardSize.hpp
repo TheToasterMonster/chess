@@ -1,5 +1,5 @@
 #pragma once
 
 namespace Chess {
-    const int boardSize = 100;
+    const int squareSize = 100;
 }

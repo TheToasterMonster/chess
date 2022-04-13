@@ -58,9 +58,9 @@ void Vect::print() const {
 }
 
 Vect Vect::toRender() const {
-    return *this * Chess::boardSize;
+    return *this * Chess::squareSize;
 }
 
 Vect Vect::toBoard() const {
-    return *this / Chess::boardSize;
+    return *this / Chess::squareSize;
 }

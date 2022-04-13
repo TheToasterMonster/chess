@@ -79,6 +79,7 @@ class Board {
         void move(const Vect& start, const Vect& end);
 
         std::vector<Vect> calcMoves(Piece* piece);
+        void promote(Piece* piece);
         bool isValidMousePosition(const Vect& position);
         bool isValidPiecePosition(const Vect& position, Piece::Side side);
         bool isSquareInCheck(const Vect& square, Piece::Side side);
