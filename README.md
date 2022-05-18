@@ -27,6 +27,6 @@ Run generated executable.
 Piece icons from [Wikimedia Commons (SVG chess pieces/Maurizio Monge)](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces/Maurizio_Monge)
 
 ## Screenshots
-![](resources/screenshots/moves.png)
-![](resources/screenshots/check.png)
+![](resources/screenshots/moves.png)\
+![](resources/screenshots/check.png)\
 ![](resources/screenshots/mate.png)
