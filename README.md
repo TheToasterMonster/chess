@@ -1,7 +1,8 @@
 # Chess
 
-## Description
 Chess client written in C++.
+
+![](resources/screenshots/starting.png)
 
 ## Requirements
 - C++17
@@ -21,3 +22,10 @@ If Windows, make sure SFML files are located at `C:\Dev\Libraries`.
 Run build task (`CTRL SHIFT B` in Windows or `CMD SHIFT B` in macOS) in VSCode, choose "build" (NOT "debug") configuration for corresponding operating system.
 
 Run generated executable.
+
+## Screenshots
+![](resources/screenshots/moves.png)
+
+![](resources/screenshots/check.png)
+
+![](resources/screenshots/mate.png)
