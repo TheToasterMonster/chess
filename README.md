@@ -28,7 +28,5 @@ Piece icons from [Wikimedia Commons (SVG chess pieces/Maurizio Monge)](https://c
 
 ## Screenshots
 ![](resources/screenshots/moves.png)
-
 ![](resources/screenshots/check.png)
-
 ![](resources/screenshots/mate.png)
