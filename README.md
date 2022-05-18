@@ -23,6 +23,9 @@ Run build task (`CTRL SHIFT B` in Windows or `CMD SHIFT B` in macOS) in VSCode, 
 
 Run generated executable.
 
+## Credits
+Piece icons from [Wikimedia Commons (SVG chess pieces/Maurizio Monge)](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces/Maurizio_Monge)
+
 ## Screenshots
 ![](resources/screenshots/moves.png)
 
