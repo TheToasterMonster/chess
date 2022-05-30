@@ -41,23 +41,23 @@ void Piece::setLocation(int x, int y) {
 
 Piece::ID Piece::determineID(Type type, Side side) const {
     switch (type) {
-        case BISHOP:
-            return (side == BLACK) ? BB : WB;
+        case Type::BISHOP:
+            return (side == Side::BLACK) ? ID::BB : ID::WB;
             break;
-        case KING:
-            return (side == BLACK) ? BK : WK;
+        case Type::KING:
+            return (side == Side::BLACK) ? ID::BK : ID::WK;
             break;
-        case KNIGHT:
-            return (side == BLACK) ? BN : WN;
+        case Type::KNIGHT:
+            return (side == Side::BLACK) ? ID::BN : ID::WN;
             break;
-        case PAWN:
-            return (side == BLACK) ? BP : WP;
+        case Type::PAWN:
+            return (side == Side::BLACK) ? ID::BP : ID::WP;
             break;
-        case QUEEN:
-            return (side == BLACK) ? BQ : WQ;
+        case Type::QUEEN:
+            return (side == Side::BLACK) ? ID::BQ : ID::WQ;
             break;
         default:
-            return (side == BLACK) ? BR : WR;
+            return (side == Side::BLACK) ? ID::BR : ID::WR;
     }
 }
 
@@ -72,26 +72,26 @@ void Piece::setHasMoved() {
 void Piece::print() const {
     std::string type;
     switch (m_type) {
-        case PAWN:
+        case Type::PAWN:
             type = "Pawn";
             break;
-        case BISHOP:
+        case Type::BISHOP:
             type = "Bishop";
             break;
-        case KNIGHT:
+        case Type::KNIGHT:
             type = "Knight";
             break;
-        case ROOK:
+        case Type::ROOK:
             type = "Rook";
             break;
-        case QUEEN:
+        case Type::QUEEN:
             type = "Queen";
             break;
-        case KING:
+        case Type::KING:
             type = "King";
             break;
     }
-    std::cout << (m_side == BLACK ? "Black" : "White") << ' ' << type << std::endl;
+    std::cout << (m_side == Side::BLACK ? "Black" : "White") << ' ' << type << std::endl;
     std::cout << "Position: " << m_location.asString() << std::endl;
     std::cout << std::endl;
 }

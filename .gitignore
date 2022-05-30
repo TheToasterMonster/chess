@@ -1,6 +1,13 @@
 /.vscode/*
-!/.vscode/tasks.json
+/.vs/*
+/*.sln
+/*.vcxproj
+/*.user
+
 /main.dSYM/
+.DS_Store
+
+/bin/
+/bin-int/
 main
 main.exe
-.DS_Store

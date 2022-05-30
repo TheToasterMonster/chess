@@ -22,21 +22,21 @@ class Board {
         };
 
         Piece::ID ids[12] = {
-            Piece::BB,
-            Piece::BK,
-            Piece::BN,
-            Piece::BP,
-            Piece::BQ,
-            Piece::BR,
-            Piece::WB,
-            Piece::WK,
-            Piece::WN,
-            Piece::WP,
-            Piece::WQ,
-            Piece::WR
+            Piece::ID::BB,
+            Piece::ID::BK,
+            Piece::ID::BN,
+            Piece::ID::BP,
+            Piece::ID::BQ,
+            Piece::ID::BR,
+            Piece::ID::WB,
+            Piece::ID::WK,
+            Piece::ID::WN,
+            Piece::ID::WP,
+            Piece::ID::WQ,
+            Piece::ID::WR
         };
 
-        enum HighlightType : uint8_t {
+        enum class HighlightType : uint8_t {
             TRANSPARENT = 0,
             GREY,
             GREEN,
@@ -45,7 +45,7 @@ class Board {
             WHITE
         };
 
-        enum GameState : uint8_t {
+        enum class GameState: uint8_t{
             ONGOING = 0,
             CHECKMATE,
             STALEMATE

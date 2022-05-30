@@ -2,6 +2,8 @@
 #include "BoardSize.hpp"
 
 Board::Board() {
+    window = nullptr;
+
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             board[i][j] = nullptr;
@@ -10,35 +12,34 @@ Board::Board() {
 
     // pawns
     for (int i = 0; i < 8; i++) {
-        board[i][1] = new Piece(Piece::BLACK, Vect(i, 1), Piece::PAWN);
+        board[i][1] = new Piece(Piece::Side::BLACK, Vect(i, 1), Piece::Type::PAWN);
     }
     for (int i = 0; i < 8; i++) {
-        board[i][6] = new Piece(Piece::WHITE, Vect(i, 6), Piece::PAWN);
+        board[i][6] = new Piece(Piece::Side::WHITE, Vect(i, 6), Piece::Type::PAWN);
     }
     // rooks
-    board[0][0] = new Piece(Piece::BLACK, Vect(0, 0), Piece::ROOK);
-    board[7][0] = new Piece(Piece::BLACK, Vect(7, 0), Piece::ROOK);
-    board[0][7] = new Piece(Piece::WHITE, Vect(0, 7), Piece::ROOK);
-    board[7][7] = new Piece(Piece::WHITE, Vect(7, 7), Piece::ROOK);
+    board[0][0] = new Piece(Piece::Side::BLACK, Vect(0, 0), Piece::Type::ROOK);
+    board[7][0] = new Piece(Piece::Side::BLACK, Vect(7, 0), Piece::Type::ROOK);
+    board[0][7] = new Piece(Piece::Side::WHITE, Vect(0, 7), Piece::Type::ROOK);
+    board[7][7] = new Piece(Piece::Side::WHITE, Vect(7, 7), Piece::Type::ROOK);
     // knights
-    board[1][0] = new Piece(Piece::BLACK, Vect(1, 0), Piece::KNIGHT);
-    board[6][0] = new Piece(Piece::BLACK, Vect(6, 0), Piece::KNIGHT);
-    board[1][7] = new Piece(Piece::WHITE, Vect(1, 7), Piece::KNIGHT);
-    board[6][7] = new Piece(Piece::WHITE, Vect(6, 7), Piece::KNIGHT);
+    board[1][0] = new Piece(Piece::Side::BLACK, Vect(1, 0), Piece::Type::KNIGHT);
+    board[6][0] = new Piece(Piece::Side::BLACK, Vect(6, 0), Piece::Type::KNIGHT);
+    board[1][7] = new Piece(Piece::Side::WHITE, Vect(1, 7), Piece::Type::KNIGHT);
+    board[6][7] = new Piece(Piece::Side::WHITE, Vect(6, 7), Piece::Type::KNIGHT);
     // bishops
-    board[2][0] = new Piece(Piece::BLACK, Vect(2, 0), Piece::BISHOP);
-    board[5][0] = new Piece(Piece::BLACK, Vect(5, 0), Piece::BISHOP);
-    board[2][7] = new Piece(Piece::WHITE, Vect(2, 7), Piece::BISHOP);
-    board[5][7] = new Piece(Piece::WHITE, Vect(5, 7), Piece::BISHOP);
+    board[2][0] = new Piece(Piece::Side::BLACK, Vect(2, 0), Piece::Type::BISHOP);
+    board[5][0] = new Piece(Piece::Side::BLACK, Vect(5, 0), Piece::Type::BISHOP);
+    board[2][7] = new Piece(Piece::Side::WHITE, Vect(2, 7), Piece::Type::BISHOP);
+    board[5][7] = new Piece(Piece::Side::WHITE, Vect(5, 7), Piece::Type::BISHOP);
     // queens
-    board[3][0] = new Piece(Piece::BLACK, Vect(3, 0), Piece::QUEEN);
-    board[3][7] = new Piece(Piece::WHITE, Vect(3, 7), Piece::QUEEN);
+    board[3][0] = new Piece(Piece::Side::BLACK, Vect(3, 0), Piece::Type::QUEEN);
+    board[3][7] = new Piece(Piece::Side::WHITE, Vect(3, 7), Piece::Type::QUEEN);
     // kings
-    board[4][0] = new Piece(Piece::BLACK, Vect(4, 0), Piece::KING);
+    board[4][0] = new Piece(Piece::Side::BLACK, Vect(4, 0), Piece::Type::KING);
     blackKing = board[4][0];
-    board[4][7] = new Piece(Piece::WHITE, Vect(4, 7), Piece::KING);
+    board[4][7] = new Piece(Piece::Side::WHITE, Vect(4, 7), Piece::Type::KING);
     whiteKing = board[4][7];
-
 
     for (int i = 0; i < 12; i++) {
         sf::Texture texture;
@@ -49,14 +50,14 @@ Board::Board() {
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            highlights[i][j] = TRANSPARENT;
+            highlights[i][j] = HighlightType::TRANSPARENT;
         }
     }
 
     whiteKingChecked = false;
     blackKingChecked = false;
     gameOver = false;
-    turn = Piece::WHITE;
+    turn = Piece::Side::WHITE;
 }
 
 Board::~Board() {
@@ -91,39 +92,39 @@ void Board::updateHighlightOnMouseClick(const Vect& position) {
         return;
     }
 
-    if (highlights[position.x][position.y] == TRANSPARENT || highlights[position.x][position.y] == RED) {
+    if (highlights[position.x][position.y] == HighlightType::TRANSPARENT || highlights[position.x][position.y] == HighlightType::RED) {
         // selected a new square, calculate moves for that square if theres a piece
         clearHighlights();
 
-        if (turn == Piece::WHITE && whiteKingChecked) {
-            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = RED;
-        } else if (turn == Piece::BLACK && blackKingChecked) {
-            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
+        if (turn == Piece::Side::WHITE && whiteKingChecked) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::RED;
+        } else if (turn == Piece::Side::BLACK && blackKingChecked) {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::RED;
         }
 
-        highlights[position.x][position.y] = GREY;
+        highlights[position.x][position.y] = HighlightType::GREY;
         selectedSquare = position;
         highlighted.push_back(position);
 
         // check if there's a piece and make sure it's that side's turn
         if (board[position.x][position.y] && board[position.x][position.y]->getSide() == turn) {
             for (const Vect& move : calcMoves(board[position.x][position.y])) {
-                highlights[move.x][move.y] = GREEN;
+                highlights[move.x][move.y] = HighlightType::GREEN;
                 highlighted.push_back(move);
             }
         }
-    } else if (highlights[position.x][position.y] == GREEN) {
+    } else if (highlights[position.x][position.y] == HighlightType::GREEN) {
         // if square is green, this must be a move
         clearHighlights();
         move(selectedSquare, position);
-    } else if (highlights[position.x][position.y] == GREY) {
+    } else if (highlights[position.x][position.y] == HighlightType::GREY) {
         // unselect the square
         clearHighlights();
 
-        if (turn == Piece::WHITE && whiteKingChecked) {
-            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = RED;
-        } else if (turn == Piece::BLACK && blackKingChecked) {
-            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
+        if (turn == Piece::Side::WHITE && whiteKingChecked) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::RED;
+        } else if (turn == Piece::Side::BLACK && blackKingChecked) {
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::RED;
         }
     }
 }
@@ -131,23 +132,23 @@ void Board::updateHighlightOnMouseClick(const Vect& position) {
 void Board::clearHighlights() {
     while (!highlighted.empty()) {
         Vect back = highlighted.back();
-        highlights[back.x][back.y] = TRANSPARENT;
+        highlights[back.x][back.y] = HighlightType::TRANSPARENT;
         highlighted.pop_back();
     }
 }
 
 void Board::move(const Vect& start, const Vect& end) {
-    if (turn == Piece::WHITE) {
-        highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = TRANSPARENT;
+    if (turn == Piece::Side::WHITE) {
+        highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::TRANSPARENT;
     } else {
-        highlights[blackKing->getLocation().x][blackKing->getLocation().y] = TRANSPARENT;
+        highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::TRANSPARENT;
     }
 
     // remove existing piece if there is one
     if (board[end.x][end.y]) {
         delete board[end.x][end.y];
         board[end.x][end.y] = nullptr;
-    } else if (board[start.x][start.y]->getType() == Piece::PAWN && abs(end.y - start.y) == 1 && abs(end.x - start.x) == 1) {
+    } else if (board[start.x][start.y]->getType() == Piece::Type::PAWN && abs(end.y - start.y) == 1 && abs(end.x - start.x) == 1) {
         // this must be an en passant
         Vect pieceLocation;
         if (end.y - start.y == 1) {
@@ -166,7 +167,7 @@ void Board::move(const Vect& start, const Vect& end) {
     }
 
     // check for a double pawn move
-    if (board[start.x][start.y]->getType() == Piece::PAWN && abs(end.y - start.y) == 2) {
+    if (board[start.x][start.y]->getType() == Piece::Type::PAWN && abs(end.y - start.y) == 2) {
         if (end.y - start.y == 2) {
             // must be black pawn
             enPassantSquare = start + Vect(0, 1);
@@ -179,17 +180,17 @@ void Board::move(const Vect& start, const Vect& end) {
     }
 
     // check for castling
-    if (board[start.x][start.y]->getType() == Piece::KING && abs(end.x - start.x) == 2) {
+    if (board[start.x][start.y]->getType() == Piece::Type::KING && abs(end.x - start.x) == 2) {
         if (end.x - start.x == 2) {
             // kingside - white rook at (7, 7), black rook at (7, 0)
-            Piece* rook = (turn == Piece::WHITE) ? board[7][7] : board[7][0];
+            Piece* rook = (turn == Piece::Side::WHITE) ? board[7][7] : board[7][0];
             board[end.x - 1][end.y] = rook;
             rook->setLocation(end - Vect(1, 0));
             rook->setHasMoved();
             board[7][end.y] = nullptr;
         } else {
             // queenside - white rook at (0, 7), black rook at (0, 0)
-            Piece* rook = (turn == Piece::WHITE) ? board[0][7] : board[0][0];
+            Piece* rook = (turn == Piece::Side::WHITE) ? board[0][7] : board[0][0];
             board[end.x + 1][end.y] = rook;
             rook->setLocation(end + Vect(1, 0));
             rook->setHasMoved();
@@ -203,51 +204,51 @@ void Board::move(const Vect& start, const Vect& end) {
     board[start.x][start.y] = nullptr;
 
     // promotion
-    if (board[end.x][end.y]->getType() == Piece::PAWN && (end.y == 0 || end.y == 7)) {
-        // board[end.x][end.y]->setType(Piece::QUEEN);
+    if (board[end.x][end.y]->getType() == Piece::Type::PAWN && (end.y == 0 || end.y == 7)) {
+        // board[end.x][end.y]->setType(Piece::Type::QUEEN);
         promote(board[end.x][end.y]);
     }
 
-    if (turn == Piece::WHITE) {
+    if (turn == Piece::Side::WHITE) {
         // if this move was legal, the king can't be in check
         if (whiteKingChecked) {
             whiteKingChecked = false;
         }
-        turn = Piece::BLACK;
+        turn = Piece::Side::BLACK;
     } else {
         if (blackKingChecked) {
             blackKingChecked = false;
         }
-        turn = Piece::WHITE;
+        turn = Piece::Side::WHITE;
     }
 
     // check for checks
-    if (turn == Piece::WHITE) {
-        whiteKingChecked = isSquareInCheck(whiteKing->getLocation(), Piece::WHITE);
+    if (turn == Piece::Side::WHITE) {
+        whiteKingChecked = isSquareInCheck(whiteKing->getLocation(), Piece::Side::WHITE);
         if (whiteKingChecked) {
-            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = RED;
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::RED;
         }
     } else {
-        blackKingChecked = isSquareInCheck(blackKing->getLocation(), Piece::BLACK);
+        blackKingChecked = isSquareInCheck(blackKing->getLocation(), Piece::Side::BLACK);
         if (blackKingChecked) {
-            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = RED;
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::RED;
         }
     }
 
     GameState gameState = getGameState();
-    if (gameState == CHECKMATE) {
-        if (turn == Piece::WHITE) {
-            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = ORANGE;
+    if (gameState == GameState::CHECKMATE) {
+        if (turn == Piece::Side::WHITE) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::ORANGE;
         } else {
-            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = ORANGE;
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::ORANGE;
         }
         gameOver = true;
         return;
-    } else if (gameState == STALEMATE) {
-        if (turn == Piece::WHITE) {
-            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = WHITE;
+    } else if (gameState == GameState::STALEMATE) {
+        if (turn == Piece::Side::WHITE) {
+            highlights[whiteKing->getLocation().x][whiteKing->getLocation().y] = HighlightType::WHITE;
         } else {
-            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = WHITE;
+            highlights[blackKing->getLocation().x][blackKing->getLocation().y] = HighlightType::WHITE;
         }
         gameOver = true;
         return;
@@ -256,10 +257,10 @@ void Board::move(const Vect& start, const Vect& end) {
 
 void Board::promote(Piece* piece) {
     Piece::ID arr[4];
-    arr[0] = (turn == Piece::WHITE) ? Piece::WQ : Piece::BQ;
-    arr[1] = (turn == Piece::WHITE) ? Piece::WB : Piece::BB;
-    arr[2] = (turn == Piece::WHITE) ? Piece::WN : Piece::BN;
-    arr[3] = (turn == Piece::WHITE) ? Piece::WR : Piece::BR;
+    arr[0] = (turn == Piece::Side::WHITE) ? Piece::ID::WQ : Piece::ID::BQ;
+    arr[1] = (turn == Piece::Side::WHITE) ? Piece::ID::WB : Piece::ID::BB;
+    arr[2] = (turn == Piece::Side::WHITE) ? Piece::ID::WN : Piece::ID::BN;
+    arr[3] = (turn == Piece::Side::WHITE) ? Piece::ID::WR : Piece::ID::BR;
 
     for (int i = 0; i < 4; i++) {
         sf::RectangleShape square(sf::Vector2f(Chess::squareSize, Chess::squareSize));
@@ -302,19 +303,19 @@ void Board::promote(Piece* piece) {
 
             switch (location.x - 4) {
                 case 0: {
-                    piece->setType(Piece::QUEEN);
+                    piece->setType(Piece::Type::QUEEN);
                     break;
                 }
                 case 1: {
-                    piece->setType(Piece::BISHOP);
+                    piece->setType(Piece::Type::BISHOP);
                     break;
                 }
                 case 2: {
-                    piece->setType(Piece::KNIGHT);
+                    piece->setType(Piece::Type::KNIGHT);
                     break;
                 }
                 case 3: {
-                    piece->setType(Piece::ROOK);
+                    piece->setType(Piece::Type::ROOK);
                     break;
                 }
                 default: {
@@ -328,20 +329,20 @@ void Board::promote(Piece* piece) {
 
 bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
     for (Vect move : Util::Get().pawnCaptures) {
-        if (side == Piece::BLACK) {
+        if (side == Piece::Side::BLACK) {
             move = Vect(0, 0) - move;
         }
 
         if (isValidPiecePosition(square - move, side) && board[square.x - move.x][square.y - move.y]) {
             Piece::Type enemyPiece = board[square.x - move.x][square.y - move.y]->getType();
-            if (enemyPiece == Piece::PAWN || enemyPiece == Piece::BISHOP || enemyPiece == Piece::QUEEN) {
+            if (enemyPiece == Piece::Type::PAWN || enemyPiece == Piece::Type::BISHOP || enemyPiece == Piece::Type::QUEEN) {
                 return true;
             }
         }
     }
     for (const Vect& move : Util::Get().knightMoves) {
         if (isValidPiecePosition(square - move, side) && board[square.x - move.x][square.y - move.y]) {
-            if (board[square.x - move.x][square.y - move.y]->getType() == Piece::KNIGHT) {
+            if (board[square.x - move.x][square.y - move.y]->getType() == Piece::Type::KNIGHT) {
                 return true;
             }
         }
@@ -358,10 +359,10 @@ bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
             }
 
             Piece::Type enemyPiece = board[square.x - move.x][square.y - move.y]->getType();
-            if (enemyPiece == Piece::ROOK || enemyPiece == Piece::QUEEN) {
+            if (enemyPiece == Piece::Type::ROOK || enemyPiece == Piece::Type::QUEEN) {
                 return true;
             }
-            if (i == 1 && enemyPiece == Piece::KING) {
+            if (i == 1 && enemyPiece == Piece::Type::KING) {
                 return true;
             }
 
@@ -382,10 +383,10 @@ bool Board::isSquareInCheck(const Vect& square, Piece::Side side) {
             }
 
             Piece::Type enemyPiece = board[square.x - move.x][square.y - move.y]->getType();
-            if (enemyPiece == Piece::BISHOP || enemyPiece == Piece::QUEEN) {
+            if (enemyPiece == Piece::Type::BISHOP || enemyPiece == Piece::Type::QUEEN) {
                 return true;
             }
-            if (i == 1 && enemyPiece == Piece::KING) {
+            if (i == 1 && enemyPiece == Piece::Type::KING) {
                 return true;
             }
 
@@ -408,7 +409,7 @@ bool Board::simulatePieceMove(Piece* piece, const Vect& shift) {
     board[newPos.x][newPos.y] = piece;
     board[piece->getLocation().x][piece->getLocation().y] = nullptr;
     piece->setLocation(newPos);
-    bool isInCheck = (piece->getSide() == Piece::WHITE) ? isSquareInCheck(whiteKing->getLocation(), Piece::WHITE) : isSquareInCheck(blackKing->getLocation(), Piece::BLACK);
+    bool isInCheck = (piece->getSide() == Piece::Side::WHITE) ? isSquareInCheck(whiteKing->getLocation(), Piece::Side::WHITE) : isSquareInCheck(blackKing->getLocation(), Piece::Side::BLACK);
 
     board[newPos.x + shift.x][newPos.y + shift.y] = piece;
     piece->setLocation(newPos + shift);
@@ -421,12 +422,12 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
     std::vector<Vect> moves;
 
     switch (piece->getType()) {
-        case Piece::PAWN: {
+        case Piece::Type::PAWN: {
             Vect move;
             std::vector<Vect> captures;
 
             // if square is black, move vectors have to be inverted
-            if (piece->getSide() == Piece::BLACK) {
+            if (piece->getSide() == Piece::Side::BLACK) {
                 move = Vect(0, 0) - Util::Get().pawnMove;
                 for (const Vect& capture : Util::Get().pawnCaptures) {
                     captures.push_back(Vect(0, 0) - capture);
@@ -459,35 +460,35 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             }
             break;
         }
-        case Piece::KNIGHT: {
+        case Piece::Type::KNIGHT: {
             moves = Util::Get().knightMoves;
             break;
         }
-        case Piece::KING: {
+        case Piece::Type::KING: {
             moves = Util::Get().kingMoves;
             // check for castling
-            if (turn == Piece::WHITE) {
+            if (turn == Piece::Side::WHITE) {
                 if (!whiteKing->hasMoved()) {
-                    if (!whiteKingChecked && !board[5][7] && !board[6][7] && board[7][7] && board[7][7]->getID() == Piece::WR && !board[7][7]->hasMoved() && !isSquareInCheck(Vect(5, 7), Piece::WHITE)) {
+                    if (!whiteKingChecked && !board[5][7] && !board[6][7] && board[7][7] && board[7][7]->getID() == Piece::ID::WR && !board[7][7]->hasMoved() && !isSquareInCheck(Vect(5, 7), Piece::Side::WHITE)) {
                         moves.push_back(Vect(-2, 0));
                     }
-                    if (!whiteKingChecked && !board[3][7] && !board[2][7] && !board[1][7] && board[0][7] && board[0][7]->getID() == Piece::WR && !board[0][7]->hasMoved() && !isSquareInCheck(Vect(3, 7), Piece::WHITE)) {
+                    if (!whiteKingChecked && !board[3][7] && !board[2][7] && !board[1][7] && board[0][7] && board[0][7]->getID() == Piece::ID::WR && !board[0][7]->hasMoved() && !isSquareInCheck(Vect(3, 7), Piece::Side::WHITE)) {
                         moves.push_back(Vect(2, 0));
                     }
                 }
             } else {
                 if (!blackKing->hasMoved()) {
-                    if (!blackKingChecked && !board[5][0] && !board[6][0] && board[7][0] && board[7][0]->getID() == Piece::BR && !board[7][0]->hasMoved() && !isSquareInCheck(Vect(5, 0), Piece::BLACK)) {
+                    if (!blackKingChecked && !board[5][0] && !board[6][0] && board[7][0] && board[7][0]->getID() == Piece::ID::BR && !board[7][0]->hasMoved() && !isSquareInCheck(Vect(5, 0), Piece::Side::BLACK)) {
                         moves.push_back(Vect(-2, 0));
                     }
-                    if (!blackKingChecked && !board[3][0] && !board[2][0] && !board[1][0] && board[0][0] && board[0][0]->getID() == Piece::BR && !board[0][0]->hasMoved() && !isSquareInCheck(Vect(3, 0), Piece::BLACK)) {
+                    if (!blackKingChecked && !board[3][0] && !board[2][0] && !board[1][0] && board[0][0] && board[0][0]->getID() == Piece::ID::BR && !board[0][0]->hasMoved() && !isSquareInCheck(Vect(3, 0), Piece::Side::BLACK)) {
                         moves.push_back(Vect(2, 0));
                     }
                 }
             }
             break;
         }
-        case Piece::BISHOP: {
+        case Piece::Type::BISHOP: {
             for (const Vect& baseMove : Util::Get().bishopMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
@@ -503,7 +504,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             }
             break;
         }
-        case Piece::ROOK: {
+        case Piece::Type::ROOK: {
             for (const Vect& baseMove : Util::Get().rookMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
@@ -519,7 +520,7 @@ std::vector<Vect> Board::calcMoves(Piece* piece) {
             }
             break;
         }
-        case Piece::QUEEN: {
+        case Piece::Type::QUEEN: {
             for (const Vect& baseMove : Util::Get().queenMoves) {
                 // check until a piece is hit
                 for (int i = 1; i < 8; i++) {
@@ -554,16 +555,16 @@ Board::GameState Board::getGameState() {
         for (int j = 0; j < 8; j++) {
             if (board[i][j] && board[i][j]->getSide() == turn) {
                 if (calcMoves(board[i][j]).size() > 0) {
-                    return ONGOING;
+                    return GameState::ONGOING;
                 }
             }
         }
     }
 
-    if (turn == Piece::WHITE) {
-        return (whiteKingChecked) ? CHECKMATE : STALEMATE;
+    if (turn == Piece::Side::WHITE) {
+        return (whiteKingChecked) ? GameState::CHECKMATE : GameState::STALEMATE;
     } else {
-        return (blackKingChecked) ? CHECKMATE : STALEMATE;
+        return (blackKingChecked) ? GameState::CHECKMATE : GameState::STALEMATE;
     }
 }
 
@@ -622,18 +623,18 @@ void Board::render() {
                 window->draw(sprite);
             }
 
-            if (highlights[i][j]) {
+            if (highlights[i][j] != HighlightType::TRANSPARENT) {
                 sf::RectangleShape highlight(sf::Vector2f(Chess::squareSize, Chess::squareSize));
                 highlight.setPosition(sf::Vector2f(i * Chess::squareSize, j * Chess::squareSize));
-                if (highlights[i][j] == GREY) {
+                if (highlights[i][j] == HighlightType::GREY) {
                     highlight.setFillColor(sf::Color(50, 50, 50, 150));
-                } else if (highlights[i][j] == GREEN) {
+                } else if (highlights[i][j] == HighlightType::GREEN) {
                     highlight.setFillColor(sf::Color(50, 205, 50, 150));
-                } else if (highlights[i][j] == ORANGE) {
+                } else if (highlights[i][j] == HighlightType::ORANGE) {
                     highlight.setFillColor(sf::Color(255, 165, 0, 150));
-                } else if (highlights[i][j] == RED) {
+                } else if (highlights[i][j] == HighlightType::RED) {
                     highlight.setFillColor(sf::Color(255, 0, 0, 150));
-                } else if (highlights[i][j] == WHITE) {
+                } else if (highlights[i][j] == HighlightType::WHITE) {
                     highlight.setFillColor(sf::Color(255, 250, 250, 150));
                 }
                 window->draw(highlight);
