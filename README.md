@@ -7,21 +7,21 @@ Chess client written in C++.
 ## Requirements
 - C++17
 - SFML 2.5.1
+- Premake v5.0.0-beta1
+- Visual Studio 2019
 - 64-bit CPU and operating system
-- Windows (g++), macOS (clang++), Linux (g++)
+- Windows 10 (support for other operating systems may or may not come later)
 
 ## Setup
-Clone the repository.
+Clone the repository:
    ```
-   git clone https://github.com/TheToasterMonster/chess.git
+   git clone --recursive https://github.com/TheToasterMonster/chess.git
    ```
-Open the project with Visual Studio Code (VSCode).
-
-If Windows, make sure SFML files are located at `C:\Dev\Libraries`.
-
-Run build task (`CTRL SHIFT B` in Windows or `CMD SHIFT B` in macOS) in VSCode, choose "build" (NOT "debug") configuration for corresponding operating system.
-
-Run generated executable.
+Run Premake:
+   ```
+   vendor\bin\premake\premake5.exe vs2019
+   ```
+Open generated `.sln` file in Visual Studio and press `F5` to build.
 
 ## Credits
 Piece icons from [Wikimedia Commons (SVG chess pieces/Maurizio Monge)](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces/Maurizio_Monge)
