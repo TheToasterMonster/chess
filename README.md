@@ -13,15 +13,19 @@ Chess client written in C++.
 - Windows 10 (support for other operating systems may or may not come later)
 
 ## Setup
-Clone the repository:
+1. Clone the repository:
    ```
    git clone --recursive https://github.com/TheToasterMonster/chess.git
    ```
-Run Premake:
+2. Open downloaded folder:
+   ```
+   cd chess
+   ```
+3. Run Premake:
    ```
    vendor\bin\premake\premake5.exe vs2019
    ```
-Open generated `.sln` file in Visual Studio and press `F5` to build.
+4. Open generated `.sln` file in Visual Studio and press `F5` to build.
 
 ## Credits
 Piece icons from [Wikimedia Commons (SVG chess pieces/Maurizio Monge)](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces/Maurizio_Monge)
