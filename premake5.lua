@@ -8,7 +8,7 @@ project "Chess"
     kind "ConsoleApp"
     language "C++"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
     
     includedirs { "dependencies/SFML-2.5.1/include" }
     libdirs { "dependencies/SFML-2.5.1/lib" }
