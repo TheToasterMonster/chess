@@ -28,7 +28,6 @@ project "Chess"
     filter "system:Windows"
         cppdialect "C++17"
         defines { "WINDOWS" }
-        postbuildcommands { "copy "}
     
     filter { "configurations:Debug", "system:Windows" }
         postbuildcommands {
