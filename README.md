@@ -6,8 +6,8 @@ Chess client written in C++.
 
 ## Requirements
 - C++17
-- SFML 2.5.1
-- Premake v5.0.0-beta1
+- [SFML 2.5.1](https://www.sfml-dev.org/)
+- [Premake v5.0.0-beta1](https://premake.github.io/)
 - Visual Studio 2019
 - 64-bit CPU and operating system
 - Windows 10 (support for other operating systems may or may not come later)
@@ -15,7 +15,7 @@ Chess client written in C++.
 ## Setup
 1. Clone the repository:
    ```
-   git clone --recursive https://github.com/TheToasterMonster/chess.git
+   git clone https://github.com/TheToasterMonster/chess.git
    ```
 2. Open downloaded folder:
    ```
